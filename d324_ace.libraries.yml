@@ -1,0 +1,37 @@
+dragula:
+  remote: https://github.com/bevacqua/dragula
+  verion: 3.7.2
+  license:
+    name: MIT
+    url: https://github.com/bevacqua/dragula/blob/master/license
+    gpl-compatible: true
+  css:
+    theme:
+      https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css: {type: external, minified: true}
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js: {type: external, minified: true}
+
+d324_ace:
+  css:
+    layout:
+      css/d324-ace.css: {}
+  js:
+    js/d324-ace.js: {}
+  dependencies:
+    - d324_ace/dragula
+
+d324_ace_frontend:
+  css:
+    theme:
+      css/d324-ace-frontend.dialog.css: {}
+      css/d324-ace-frontend.paragraphs.css: {}
+  js:
+    js/d324-ace-frontend.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+
+full_screen_editing:
+  css:
+    layout:
+      css/full-screen-editing.css: {}

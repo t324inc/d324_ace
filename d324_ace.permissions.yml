@@ -1,0 +1,8 @@
+adjust d324 ace options:
+  title: 'Adjust D324 Ace options'
+  description: "Allow access to the 'Layout options'-form when creating/editing a Layout"
+edit d324 ace plugin config:
+  title: 'Edit D324 Ace Plugin Config'
+  description: "Allow access to the 'Layout plugin configuration' form when creating/editing a Layout"
+d324 ace manage paragraphs from frontend:
+  title: "Manage Paragraphs from the frontend"

@@ -1,0 +1,13 @@
+name: 'D324 Ace Paragraphs'
+type: module
+description: 'Provides default paragraph types for D324 Ace'
+# core: 8.x
+package: D324
+dependencies:
+  - drupal:d324_ace
+
+# Information added by Drupal.org packaging script on 2019-07-11
+version: '8.x-1.0-alpha2+3-dev'
+core: '8.x'
+project: 'd324_ace'
+datestamp: 1562857690

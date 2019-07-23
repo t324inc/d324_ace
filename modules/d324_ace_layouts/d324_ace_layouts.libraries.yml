@@ -1,0 +1,5 @@
+ace_layouts:
+  version: VERSION
+  css:
+    theme:
+      css/ace_layouts.css: {}

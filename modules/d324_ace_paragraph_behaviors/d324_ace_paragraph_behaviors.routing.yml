@@ -1,0 +1,7 @@
+d324_ace_paragraph_behaviors.styles:
+  path: '/admin/reports/d324_ace_paragraph_behaviors/styles'
+  defaults:
+    _controller: '\Drupal\d324_ace_paragraph_behaviors\Controller\OverviewController::styles'
+    _title: 'Available styles'
+  requirements:
+    _permission: 'administer paragraphs types'

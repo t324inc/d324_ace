@@ -1,0 +1,509 @@
+/**
+
+*[data-ace-field-paragraph-field-wrapper] .field--item,
+.d324-ace-frontend-field-paragraph-wrapper > * {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+**/
+
+.d324-ace-frontend-field-paragraph-wrapper,
+.d324-ace-frontend-field-layout-wrapper {
+  position: relative;
+  transition: all .5s ease;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover {
+  background: #eee;
+}
+
+.d324-ace-frontend-field-paragraph-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region,
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region {
+  opacity: 0;
+  transition: all .5s ease;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region,
+.d324-ace-frontend-field-layout-wrapper .d324-ace-frontend-field-layout-links:hover .d324-ace-frontend-links-region {
+  opacity: 1;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-top,
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-bottom {
+  position: absolute;
+  top: .25rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  transition: all .5s ease;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-links-top,
+.d324-ace-frontend-field-layout-wrapper:hover .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-top {
+  top: 0;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-bottom {
+  top: unset;
+  bottom: .25rem;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-links-bottom,
+.d324-ace-frontend-field-layout-wrapper:hover .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-bottom {
+  bottom: 0;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-links-top .d324-ace-frontend-links-region-center,
+.d324-ace-frontend-field-layout-wrapper .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-top .d324-ace-frontend-links-region-center {
+  position: relative;
+  transition: all .35s ease;
+  bottom: 0;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-links-top .d324-ace-frontend-links-region-center,
+.d324-ace-frontend-field-layout-wrapper:hover .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-top .d324-ace-frontend-links-region-center {
+  bottom: .9375rem;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-links-bottom .d324-ace-frontend-links-region-center,
+.d324-ace-frontend-field-layout-wrapper .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-bottom .d324-ace-frontend-links-region-center {
+  position: relative;
+  transition: all .35s ease;
+  top: 0;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-links-bottom .d324-ace-frontend-links-region-center,
+.d324-ace-frontend-field-layout-wrapper:hover .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-bottom .d324-ace-frontend-links-region-center {
+  top: .9375rem;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region,
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region {
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  padding: 4px;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region-center,
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region-center {
+  justify-content: center;
+  flex-basis: auto;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region-left,
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region-left {
+  justify-content: flex-start;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-frontend-links-region-right,
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region-right{
+  justify-content: flex-end;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-button,
+.d324-ace-frontend-field-layout-links .d324-ace-button {
+  position: relative;
+  display: block;
+  background: #fff;
+  width: 1.875rem;
+  height: 1.875rem;
+  line-height: 1.875rem;
+  box-shadow: 1px 1px 1px rgba(0,0,0,.15);
+  transition: all .35s ease;
+  z-index: 1030;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-button:hover,
+.d324-ace-frontend-field-layout-links .d324-ace-button:hover {
+  box-shadow: 2px 2px 2px rgba(0,0,0,.2);
+  z-index: 1031;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-button img,
+.d324-ace-frontend-field-layout-links .d324-ace-button img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  object-position: center center;
+  margin: 20%;
+  display: block;
+  opacity: .5;
+  transition: all .35s ease;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-button:hover img,
+.d324-ace-frontend-field-layout-links .d324-ace-button:hover img {
+  height: 66%;
+  width: 66%;
+  margin: 17%;
+  opacity: .85;
+}
+
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links .d324-ace-button {
+  display: none;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-paste {
+  display: none;
+}
+
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links .d324-ace-button.d324-ace-paste,
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links .d324-ace-button.d324-ace-paste {
+  display: block;
+}
+
+.d324-ace-cut-paste .d324-ace-cut-paste-disabled .d324-ace-frontend-field-paragraph-links .d324-ace-button {
+  display: none;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper.d324-ace-cut-paste-disabled {
+  outline: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.d324-ace-frontend-field-paragraph-wrapper.d324-ace-cut-paste-disabled:after {
+  background-color: rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.d324-ace-frontend-add-type {
+  align-items: center;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.d324-ace-frontend-add-type input.image-button, .d324-ace-frontend-add-type input.image-button:focus {
+  background: none !important;
+  border: none;
+  margin-right: 1em !important;
+  object-fit: contain;
+  object-position: 0 bottom;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.d324-ace-frontend-add-type input.image-button + span {
+  background: #eee !important;
+  color: #000 !important;
+  display: block;
+  position: relative;
+  margin-left: 3rem !important;
+  padding: .5rem .75rem !important;
+  font-size: 14px !important;
+  pointer-events: none;
+}
+
+.d324-ace-frontend-add-type input.image-button:hover + span {
+  background: #ddd !important;
+}
+
+div[data-ace-field-paragraph-layout-wrapper] div[data-ace-field-paragraph-region-wrapper] {
+  transition: all .5s ease;
+  outline: 1px dashed transparent;
+  border-collapse: collapse;
+}
+
+div[data-ace-field-paragraph-layout-wrapper]:hover div[data-ace-field-paragraph-region-wrapper] {
+  outline: 1px dashed rgba(0,0,0,.1);
+}
+
+.d324-ace-frontend-field-layout-links {
+  display: flex;
+  outline: 1px dashed transparent;
+  transition: all .5s ease;
+}
+
+div[data-ace-field-wrapper]:hover .d324-ace-frontend-field-layout-links {
+  outline: 1px dashed rgba(0,0,0,.1);
+}
+
+.d324-ace-frontend-field-layout-links .d324-ace-frontend-links-region {
+  padding: 0;
+}
+
+.d324-ace-frontend-field-layout-wrapper .d324-ace-frontend-field-layout-links.d324-ace-frontend-links-top .d324-ace-frontend-links-region-center {
+  opacity: 0;
+  transition: all .5s ease;
+}
+
+.d324-ace-frontend-field-layout-wrapper .d324-ace-frontend-field-layout-links:hover .d324-ace-frontend-links-region-center {
+  opacity: 1;
+}
+
+div[data-ace-field-paragraph-layout-wrapper] div[data-ace-field-paragraph-region-wrapper] {
+  max-width: 100%;
+}
+
+/**
+.d324-ace-frontend-field-paragraph-wrapper {
+  position: relative;
+  clear: both;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover {
+  outline: 5px solid rgba(85, 142, 213, 0.5);
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-field-paragraph-wrapper:hover {
+  outline-color: rgba(0, 0, 0, 0.5);
+}
+
+.d324-ace-frontend-field-paragraph-links {
+  display: none;
+  margin: 0;
+  padding: 0;
+  position: static;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-field-paragraph-links {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li {
+  z-index: 101;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper > .d324-ace-frontend-field-paragraph-links li {
+  z-index: 100;
+}
+
+.d324-ace-frontend-field-paragraph-links li {
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+}
+
+.d324-ace-frontend-field-paragraph-links li.edit {
+  top: 50%;
+  transform: translate(75%, -50%);
+}
+
+.d324-ace-frontend-field-paragraph-links li.delete {
+  top: 50%;
+  transform: translate(-175%, -50%);
+}
+
+.d324-ace-frontend-field-paragraph-links li.cut {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.d324-ace-frontend-field-paragraph-links li.add-before,
+.d324-ace-frontend-field-paragraph-links li.add-after {
+  transform: translateX(-50%);
+}
+
+.d324-ace-frontend-field-paragraph-links li.add-after {
+  bottom: -23px;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li.add-after {
+  bottom: auto;
+  top: 50%;
+  transform: translate(250%, -50%);
+}
+
+.d324-ace-frontend-field-paragraph-links li.add-before {
+  top: -23px;
+}
+
+.d324-ace-frontend-field-paragraph-links li.paste-after,
+.d324-ace-frontend-field-paragraph-links li.paste-before {
+  display: none;
+  margin: 0 0 0 -20px;
+  position: absolute;
+  left: 50%;
+}
+
+.d324-ace-frontend-field-paragraph-links li.paste-after {
+  bottom: -23px;
+}
+
+.d324-ace-frontend-field-paragraph-links li.paste-before {
+  top: -23px;
+}
+
+.d324-ace-frontend-field-paragraph-links.d324-ace-frontend-field-paragraph-add-first {
+  display: block;
+}
+.d324-ace-frontend-field-paragraph-links.d324-ace-frontend-field-paragraph-add-first li.add-before {
+  margin-top: 40px;
+  position: relative;
+}
+
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links li {
+  display: none;
+}
+
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links li.paste-after,
+.d324-ace-cut-paste .d324-ace-frontend-field-paragraph-links li.paste-before {
+  display: block;
+}
+
+.d324-ace-cut-paste .d324-ace-cut-paste-disabled .d324-ace-frontend-field-paragraph-links li.paste-after,
+.d324-ace-cut-paste .d324-ace-cut-paste-disabled .d324-ace-frontend-field-paragraph-links li.paste-before {
+  display: none;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper.d324-ace-cut-paste-disabled {
+  outline: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.d324-ace-frontend-field-paragraph-wrapper.d324-ace-cut-paste-disabled:after {
+  background-color: rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li.add-before {
+  top: 50%;
+  transform: translate(-350%, -50%);
+}
+
+.d324-ace-frontend-field-paragraph-links .ajax-progress {
+  left: 50%;
+  margin: -5px 0 0 -8px;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+}
+
+.d324-ace-frontend-field-paragraph-links .ajax-progress-throbber .throbber {
+  display: block;
+  height: 13px;
+  padding: 0;
+  width: 17px;
+}
+
+.d324-ace-frontend-field-paragraph-links a {
+  background-color: #fff;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  border: 2px solid #558ed5;
+  border-radius: 50%;
+  color: #558ed5;
+  display: block;
+  font-weight: bold;
+  height: 40px;
+  padding: 0;
+  text-indent: -9999px;
+  width: 40px;
+}
+
+.d324-ace-frontend-field-paragraph-links a.disabled {
+  background-color: #dddddd;
+  border: 2px solid #aaaaaa;
+  color: #aaaaaa;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper:hover .d324-ace-frontend-field-paragraph-links a:hover,
+.d324-ace-frontend-field-paragraph-links a:hover {
+  background-color: #f78a5f;
+  border-color: #f78a5f;
+  box-shadow: 0 0 5px #000;
+  color: #fff;
+}
+
+.d324-ace-frontend-field-paragraph-links a.disabled:hover {
+  background-color: #dddddd;
+  border-color: #aaaaaa;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.d324-ace-frontend-field-paragraph-links li.add-after a,
+.d324-ace-frontend-field-paragraph-links li.add-before a {
+  background-image: url(../img/d324-ace-add.svg);
+}
+
+.d324-ace-frontend-field-paragraph-links li.cut a {
+  background-image: url(../img/d324-ace-scissors.svg);
+}
+
+.d324-ace-frontend-field-paragraph-links li.delete a {
+  background-image: url(../img/d324-ace-trash.svg);
+}
+
+.d324-ace-frontend-field-paragraph-links li.edit a {
+  background-image: url(../img/d324-ace-pencil.svg);
+}
+
+.d324-ace-frontend-field-paragraph-links li.paste-after a,
+.d324-ace-frontend-field-paragraph-links li.paste-before a {
+  background-image: url(../img/d324-ace-paste.svg);
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li {
+  bottom: 25%;
+  top: auto;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li.add-before,
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li.add-after {
+  display: none;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-wrapper .d324-ace-frontend-field-paragraph-links li .d324-ace-button {
+  height: 1.875rem;
+  width: 1.875rem;
+}
+
+.d324-ace-frontend-field-paragraph-links {
+  display: initial !important;
+  pointer-events: none;
+}
+
+.d324-ace-frontend-field-paragraph-links .d324-ace-button {
+  opacity: 0;
+  transform: scale(.5);
+  transition: all .35s ease;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover > .d324-ace-frontend-field-paragraph-links {
+  pointer-events: auto;
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover > .d324-ace-frontend-field-paragraph-links .d324-ace-button {
+  opacity: .85;
+  transform: scale(1);
+}
+
+.d324-ace-frontend-field-paragraph-wrapper:hover > .d324-ace-frontend-field-paragraph-links .d324-ace-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+
+**/

@@ -1,0 +1,6 @@
+d324_ace_paragraph_behaviors.styles:
+  title: 'Paragraphs Collection'
+  parent: system.admin_reports
+  description: 'Overviews of items discoverable by behavior plugins.'
+  route_name: d324_ace_paragraph_behaviors.styles
+  menu_name: admin

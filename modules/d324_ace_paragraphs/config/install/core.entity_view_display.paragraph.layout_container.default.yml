@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.layout_container
+  enforced:
+    module:
+      - d324_ace_paragraphs
+id: paragraph.layout_container.default
+targetEntityType: paragraph
+bundle: layout_container
+mode: default
+hidden: {  }

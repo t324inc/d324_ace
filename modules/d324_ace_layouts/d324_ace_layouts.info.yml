@@ -1,0 +1,13 @@
+name: 'D324 Ace Layouts'
+type: module
+description: 'Provides simple, configurable layouts for D324 Ace'
+# core: 8.x
+package: D324
+dependencies:
+  - layout_discovery
+
+# Information added by Drupal.org packaging script on 2019-07-11
+version: '8.x-1.0-alpha2+3-dev'
+core: '8.x'
+project: 'd324_ace'
+datestamp: 1562857690

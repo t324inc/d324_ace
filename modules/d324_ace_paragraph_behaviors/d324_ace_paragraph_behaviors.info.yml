@@ -1,0 +1,8 @@
+name: 'D324 Ace Paragraph Behaviors'
+type: module
+description: 'Provides paragraph behaviors for D324 Ace'
+core: 8.x
+package: D324
+dependencies:
+  - d324_ace:d324_ace
+  - paragraphs:paragraphs

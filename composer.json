@@ -1,0 +1,45 @@
+{
+    "name": "drupal/d324_ace",
+    "type": "drupal-module",
+    "description": "D324 advanced Paragraphs+Layout content editing interface",
+    "keywords": ["Drupal"],
+    "homepage": "https://github.com/t324inc/d324_ace",
+    "support": {
+        "source": "https://github.com/t324inc/d324_ace"
+    },
+    "authors": [
+        {
+            "name": "T324",
+            "homepage": "https://www.t324.com",
+            "role": "Maintainer"
+        }
+    ],
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    },
+    "require": {
+        "composer/installers": "~1.0",
+        "oomphinc/composer-installers-extender": "~1.0",
+        "cweagans/composer-patches": "~1.0",
+        "drupal/drupal-library-installer-plugin": "^0.3",
+        "t324inc/d324_core": "8.7.x-dev",
+        "drupal/paragraphs": "^1.6",
+        "drupal/inline_entity_form": "^1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-8.x-7.x": "8.7.x-dev"
+        },
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true
+    }
+}

@@ -1,0 +1,9 @@
+services:
+  d324_ace_paragraph_behaviors.style_discovery:
+    class: \Drupal\d324_ace_paragraph_behaviors\StyleDiscovery
+    arguments: ['@module_handler', '@string_translation', '@controller_resolver', '@cache.discovery', '@theme_handler', '@config.factory', '@current_user']
+  d324_ace_paragraph_behaviors.style_config_cache_tag_invalidator:
+    class: Drupal\d324_ace_paragraph_behaviors\EventSubscriber\AceParagraphsStyleConfigCacheTag
+    arguments: ['@cache_tags.invalidator']
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,68 @@
+.layout-node-form {
+  position: relative;
+  /* overflow: scroll; */
+  /* overflow: auto; */
+  height: 100%;
+}
+.layout-node-form .layout-region-node-footer {
+  position: fixed;
+  width: 100%;
+  background: #fff;
+  padding: 0 30px 10px 30px;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, .2);
+}
+
+.layout-node-form .layout-region-node-footer .form-item-status-value {
+  float: left;
+  padding: 7px 20px 0 0;
+}
+
+.layout-region-node-main {
+  float: none !important;
+  width: auto !important;
+  clear: both !important;
+  padding-right: 0 !important;
+}
+.layout-region-node-secondary {
+  float: none !important;
+  width: auto !important;
+  clear: both !important;
+}
+
+.layout-node-form .layout-region-node-footer {
+  padding: 0 1rem 1rem;
+}
+
+.layout-node-form .layout-region-node-footer__content {
+  border-top: none;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.layout-node-form .layout-region-node-footer__content .form-actions {
+  margin: 0;
+}
+
+.layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper > div {
+  margin: 0 0 0 1rem;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+}
+
+.layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper > div select {
+  margin-left: 1rem;
+}
+
+.layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper > div label {
+  margin: 0 .25rem 0 0;
+}

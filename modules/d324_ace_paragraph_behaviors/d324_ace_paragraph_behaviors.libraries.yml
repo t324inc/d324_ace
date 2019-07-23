@@ -1,0 +1,30 @@
+overview:
+  css:
+    component:
+      css/overview.admin.css: {}
+  js:
+    js/overview.admin.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+
+plugin_admin:
+  css:
+    theme:
+      css/plugin.admin.css: {}
+
+background:
+  css:
+    theme:
+      css/background.css: {}
+
+slideshow.light:
+  css:
+    theme:
+      css/slideshow/light.css: {}
+
+slideshow.dark:
+  css:
+    theme:
+      css/slideshow/dark.css: {}

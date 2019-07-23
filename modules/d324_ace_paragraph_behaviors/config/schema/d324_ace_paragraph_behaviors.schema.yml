@@ -1,0 +1,23 @@
+paragraphs.behavior.settings.style:
+  type: paragraphs.behavior.settings_base
+  mapping:
+    groups:
+      type: sequence
+      label: 'Style groups'
+      sequence:
+        type: mapping
+        label: 'Style groups configuration'
+        mapping:
+          default:
+            type: string
+            label: 'Default group style'
+
+d324_ace_paragraph_behaviors.settings:
+  type: config_object
+  mapping:
+    enabled_styles:
+      type: sequence
+      label: 'Enabled styles'
+      sequence:
+        type: string
+        label: 'Style name'

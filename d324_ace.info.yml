@@ -1,0 +1,12 @@
+name: 'D324 Advanced Content Editing'
+description: 'D324 paragraph-based front-end content editing with inline layout options and front-end'
+type: module
+core: 8.x
+version: 8.x-7.x-dev
+project: d324_ace
+package: D324
+dependencies:
+  - paragraphs:paragraphs
+  - inline_entity_form:inline_entity_form
+  - drupal:layout_discovery
+  - t324inc:d324_core

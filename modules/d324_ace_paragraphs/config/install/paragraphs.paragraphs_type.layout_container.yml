@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - d324_ace_paragraphs
+id: layout_container
+label: 'Layout Container'
+icon_uuid: null
+description: 'Holds D324 Ace layout section config and nested paragraphs'
+behavior_plugins: {  }

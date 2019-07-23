@@ -1,0 +1,14 @@
+ace-paragraphs-slideshow-light:
+  title: 'Slideshow Light'
+  description: 'Light blue background with centered text.'
+  groups:
+    - slideshow_group
+  libraries:
+    - 'd324_ace_paragraph_behaviors/slideshow.light'
+ace-paragraphs-slideshow-dark:
+  title: 'Slideshow Dark'
+  description: 'Dark blue background with centered text.'
+  groups:
+    - slideshow_group
+  libraries:
+    - 'd324_ace_paragraph_behaviors/slideshow.dark'

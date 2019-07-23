@@ -1,0 +1,42 @@
+@media (min-width: 768px) {
+  .paragraphs-plugin-inline-container {
+    display: flex;
+  }
+  .paragraphs-plugin-inline-container > .form-item {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .paragraphs-plugin-inline-container > .form-item label {
+    margin-top: 5px;
+    min-width: 150px;
+  }
+  .paragraphs-plugin-inline-container > .form-item .paragraphs-plugin-form-element {
+    margin-left: 10px;
+    margin-bottom: 2px;
+    height: fit-content;
+  }
+  .paragraphs-plugin-inline-container > .form-item .select2-container {
+    margin-left: 10px;
+    margin-bottom: 2px;
+  }
+  .paragraphs-plugin-inline-container.multiple-lines {
+    flex-direction: column;
+  }
+}
+.paragraphs-plugin-inline-container .select2-container .select2-selection {
+  min-width: 100px;
+}
+
+.d324-ace-paragraph-behaviors-language-behavior-form > .fieldset-wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.d324-ace-paragraph-behaviors-language-behavior-form > .fieldset-wrapper > .form-item {
+  float: left;
+}
+.d324-ace-paragraph-behaviors-language-behavior-form > .fieldset-wrapper > .form-item:not(:last-child) {
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=plugin.admin.css.map */

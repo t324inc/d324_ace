@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a D324 Ace Frontend Dialog Content Wrapper.
+ *
+ * Available variables:
+ * - top: The upper group of paragraph frontend editing links, an array containing:
+ *   -  left: Top left controls group
+ *   -  center: Top center controls group
+ *   -  right: Top right controls group
+ * - bottom: The upper group of paragraph frontend editing links, an array containing:
+ *   -  left: Bottom left controls group
+ *   -  center: Bottom center controls group
+ *   -  right: Bottom right controls group
+ * - attributes: HTML attributes for the containing element.
+ *
+ * @see template_preprocess_d324_ace_frontend_field_paragraph_links()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes }}>
+  {% if top.left or top.center or top.right %}
+    <div class="d324-ace-frontend-links-top">
+      {{ top.left }}
+      {{ top.center }}
+      {{ top.right }}
+    </div>
+  {% endif %}
+  {% if bottom.left or bottom.center or bottom.right %}
+    <div class="d324-ace-frontend-links-bottom">
+      {{ bottom.left }}
+      {{ bottom.center }}
+      {{ bottom.right }}
+    </div>
+  {% endif %}
+</div>
