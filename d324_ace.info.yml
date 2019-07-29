@@ -1,5 +1,5 @@
 name: 'D324 Advanced Content Editing'
-description: 'D324 paragraph-based front-end content editing with inline layout options and front-end'
+description: 'D324 paragraph-based front-end content editing with inline layout options and front-end config'
 type: module
 core: 8.x
 version: 8.x-7.x-dev
