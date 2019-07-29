@@ -1,9 +1,11 @@
 {
-    "name": "drupal/d324_ace",
+    "name": "t324inc/d324_ace",
     "type": "drupal-module",
     "description": "D324 advanced Paragraphs+Layout content editing interface",
     "keywords": ["Drupal"],
     "homepage": "https://github.com/t324inc/d324_ace",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
     "support": {
         "source": "https://github.com/t324inc/d324_ace"
     },
@@ -14,8 +16,6 @@
             "role": "Maintainer"
         }
     ],
-    "license": "GPL-2.0+",
-    "minimum-stability": "dev",
     "repositories": {
         "drupal": {
             "type": "composer",
