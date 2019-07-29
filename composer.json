@@ -17,9 +17,17 @@
         }
     ],
     "repositories": {
+        "t324": {
+            "type": "composer",
+            "url": "https://t324inc.github.io/satis/"
+        },
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        "assets": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
     },
     "require": {
