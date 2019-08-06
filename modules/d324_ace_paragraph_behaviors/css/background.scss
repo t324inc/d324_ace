@@ -1,20 +1,35 @@
 // Code for using the image field as background.
-.paragraph {
-  &.ace-paragraphs-behavior-background {
-    position: relative;
+.paragraph-background-wrapper {
+  position: relative;
 
-    > .ace-paragraphs-behavior-background--element {
-      position: relative;
-      z-index: 20;
+  .paragraph-background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .paragraph-background-media-overlay {
+      width: 100%;
+      height: 100%;
+
+      .media, .media img, .media picture, .media video {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        object-position: top center;
+      }
     }
 
-    > .ace-paragraphs-behavior-background--image {
+    .paragraph-background-color-overlay {
+      width: 100%;
+      height: 100%;
       position: absolute;
       top: 0;
-      height: 100%;
-      margin-right: 0;
-      overflow: hidden;
-      z-index: 10;
+      left: 0;
     }
   }
 }

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\SubformState;
 use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -138,31 +139,22 @@ function d324_ace_preprocess_field(&$vars) {
 
           $paragraph_to_cut = $nested_paragraph_entity;
 
-          $paragraph_wrapper_id = Html::getUniqueId('ace-paragraph-' . $nested_paragraph_entity->id());
-
           $links = [
-            '#theme' => 'd324_ace_frontend_field_paragraph_links',
-            '#top' => [
+            'top' => [
               'left' => [],
               'center' => [],
               'right' => [],
             ],
-            '#bottom' => [
+            'bottom' => [
               'left' => [],
               'center' => [],
               'right' => [],
-            ],
-            '#attached' => [
-              'library' => [
-                'core/drupal.dialog.ajax',
-                'd324_ace/d324_ace_frontend',
-              ],
             ],
           ];
 
           if (!$translated_parent && $can_add_more_fields) {
             // Add link - before.
-            $links['#top']['center']['add_before'] = [
+            $links['top']['center']['add_before'] = [
               '#type' => 'link',
               '#icon' => 'add',
               '#title' => t('Add before'),
@@ -190,7 +182,7 @@ function d324_ace_preprocess_field(&$vars) {
             ];
 
             // Add link - after.
-            $links['#bottom']['center']['add_after'] = [
+            $links['bottom']['center']['add_after'] = [
               '#type' => 'link',
               '#icon' => 'add',
               '#title' => t('Add after'),
@@ -219,7 +211,7 @@ function d324_ace_preprocess_field(&$vars) {
           }
 
           // Edit link.
-          $links['#top']['right']['edit'] = [
+          $links['top']['right']['edit'] = [
             '#type' => 'link',
             '#icon' => 'edit',
             '#title' => t('Edit'),
@@ -244,7 +236,7 @@ function d324_ace_preprocess_field(&$vars) {
           ];
           if ($translated_parent) {
             if ($nested_paragraph_entity->isDefaultTranslation()) {
-              $links['#top']['right']['edit'] = [
+              $links['top']['right']['edit'] = [
                 '#type' => 'link',
                 '#icon' => 'edit',
                 '#title' => t('Translate'),
@@ -269,14 +261,14 @@ function d324_ace_preprocess_field(&$vars) {
               ];
             }
             if (!$nested_paragraph_entity->isTranslatable()) {
-              unset($links['#top']['right']['edit']);
+              unset($links['top']['right']['edit']);
             }
           }
 
           if (!$translated_parent) {
             if (count($element['#items']) > 1) {
               // Cut link.
-              $links['#top']['left']['cut'] = [
+              $links['top']['left']['cut'] = [
                 '#type' => 'link',
                 '#title' => t('Cut'),
                 '#icon' => 'cut',
@@ -301,7 +293,7 @@ function d324_ace_preprocess_field(&$vars) {
             }
 
             // Delete link.
-            $links['#top']['right']['delete'] = [
+            $links['top']['right']['delete'] = [
               '#type' => 'link',
               '#icon' => 'delete',
               '#title' => t('Delete'),
@@ -323,14 +315,14 @@ function d324_ace_preprocess_field(&$vars) {
               ],
             ];
             if ($field_definition->isRequired() && count($element['#items']) == 1) {
-              $links['#top']['right']['delete']['#title'] = t('Cannot remove the last item of a required field');
-              $links['#top']['right']['delete']['#url'] = Url::fromUserInput('#');
-              $links['#top']['right']['delete']['#attributes']['class'][] = 'disabled';
-              $links['#top']['right']['delete']['#attributes']['title'] = t('Cannot remove the last item of a required field');
+              $links['top']['right']['delete']['#title'] = t('Cannot remove the last item of a required field');
+              $links['top']['right']['delete']['#url'] = Url::fromUserInput('#');
+              $links['top']['right']['delete']['#attributes']['class'][] = 'disabled';
+              $links['top']['right']['delete']['#attributes']['title'] = t('Cannot remove the last item of a required field');
             }
 
             // Paste link - before.
-            $links['#top']['center']['paste_before'] = [
+            $links['top']['center']['paste_before'] = [
               '#type' => 'link',
               '#icon' => 'paste',
               '#title' => t('Paste'),
@@ -357,7 +349,7 @@ function d324_ace_preprocess_field(&$vars) {
             ];
 
             // Paste link - after.
-            $links['#bottom']['center']['paste_after'] = [
+            $links['bottom']['center']['paste_after'] = [
               '#type' => 'link',
               '#icon' => 'paste',
               '#title' => t('Paste'),
@@ -395,9 +387,16 @@ function d324_ace_preprocess_field(&$vars) {
 
           \Drupal::moduleHandler()->alter('d324_ace_paragraph_links', $links, $context);
 
-          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#theme_wrappers'] = ['d324_ace_frontend_field_paragraph_wrapper'];
+          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#attached'] = [
+            'library' => [
+              'core/drupal.dialog.ajax',
+              'd324_ace/d324_ace_frontend',
+            ],
+          ];
 
-          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#d324_ace_frontend_field_paragraph_links'] = $links;
+          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#theme_wrappers'] = ['d324_ace_frontend_paragraph_wrapper'];
+
+          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#paragraph_links'] = $links;
 
           if (
             $nested_paragraph_entity->isTranslatable() &&
@@ -416,27 +415,19 @@ function d324_ace_preprocess_field(&$vars) {
       $vars['items'][$layout_item_id]['attributes']['data-ace-field-paragraph-layout-wrapper'] = $layout_wrapper_id;
 
       $layout_links = [
-        '#theme' => 'd324_ace_frontend_field_paragraph_links',
-        '#top' => [
+        'top' => [
           'left' => [],
           'center' => [],
           'right' => [],
         ],
-        '#bottom' => [
+        'bottom' => [
           'left' => [],
           'center' => [],
           'right' => [],
         ],
-        '#attached' => [
-          'library' => [
-            'core/drupal.dialog.ajax',
-            'd324_ace/d324_ace_frontend',
-          ],
-        ],
-        '#weight' => 99,
       ];
 
-      $layout_links['#top']['center']['add_before'] = [
+      $layout_links['top']['center']['add_before'] = [
         '#type' => 'link',
         '#icon' => 'columns',
         '#title' => t('Add layout container above'),
@@ -457,12 +448,12 @@ function d324_ace_preprocess_field(&$vars) {
           'data-dialog-type' => 'dialog',
           'data-dialog-renderer' => 'off_canvas',
           'data-dialog-options' => '{"width":"400px"}',
-          'title' => t('Add before'),
+          'title' => t('Add layout container above'),
         ],
       ];
 
       // Add link - after.
-      $layout_links['#bottom']['center']['add_after'] = [
+      $layout_links['bottom']['center']['add_after'] = [
         '#type' => 'link',
         '#icon' => 'columns',
         '#title' => t('Add layout container below'),
@@ -483,13 +474,20 @@ function d324_ace_preprocess_field(&$vars) {
           'data-dialog-type' => 'dialog',
           'data-dialog-renderer' => 'off_canvas',
           'data-dialog-options' => '{"width":"400px"}',
-          'title' => t('Add after'),
+          'title' => t('Add layout container below'),
         ],
       ];
 
-      $vars['items'][$layout_item_id]['content']['#theme_wrappers'] = ['d324_ace_frontend_field_layout_wrapper'];
+      $vars['items'][$layout_item_id]['content']['#theme_wrappers'] = ['d324_ace_frontend_layout_wrapper'];
 
-      $vars['items'][$layout_item_id]['content']['#d324_ace_frontend_field_layout_links'] = $layout_links;
+      $vars['items'][$layout_item_id]['content']['#layout_links'] = $layout_links;
+
+      $vars['items'][$layout_item_id]['content']['#attached'] = [
+        'library' => [
+          'core/drupal.dialog.ajax',
+          'd324_ace/d324_ace_frontend',
+        ],
+      ];
 
     }
   }
@@ -701,7 +699,7 @@ function theme_d324_ace_widget(array $variables) {
     ],
     'title' => [
       '#type' => 'html_tag',
-      '#tag' => 'h4',
+      '#tag' => 'legend',
       '#value' => t('Disabled items'),
     ],
     'container' => [
@@ -817,7 +815,7 @@ function theme_d324_ace_widget(array $variables) {
   // Add "disabled" container to build (anyway) with eventual items into it.
   $build['disabled'] = $disabled;
 
-  $build['#attached']['drupalSettings']['erlLayoutFields'][$form['#id']] = $form['#id'];
+  // $build['#attached']['drupalSettings']['erlLayoutFields'][$form['#id']] = $form['#id'];
   $build['#attached']['library'][] = 'd324_ace/d324_ace';
   return $renderer->render($build);
 }
@@ -899,11 +897,11 @@ function d324_ace_theme() {
       ],
       'file' => 'd324_ace.theme.inc',
     ],
-    'd324_ace_frontend_field_paragraph_wrapper' => [
+    'd324_ace_frontend_paragraph_wrapper' => [
       'render element' => 'element',
       'file' => 'd324_ace.theme.inc',
     ],
-    'd324_ace_frontend_field_layout_wrapper' => [
+    'd324_ace_frontend_layout_wrapper' => [
       'render element' => 'element',
       'file' => 'd324_ace.theme.inc',
     ],
@@ -976,14 +974,73 @@ function _d324_ace_modal_wrappers(array $element) {
 }
 
 /**
- * Implements hook_alter_form().
- *
- * Adds HTML wrappers for modal when appropriate.
+ * Process function for ace forms
  */
 function d324_ace_alter_form(&$element, &$form_state) {
   $element['#attributes']['class'][] = 'ace-entity-form';
   $element = _d324_ace_modal_wrappers($element);
   return $element;
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function d324_ace_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+
+  $route_match = \Drupal::routeMatch();
+
+  /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+  $paragraph = $entity_form['#entity'];
+
+  $behavior_element = [];
+  // Build the behavior plugins fields, do not display behaviors when
+  // translating and untranslatable fields are hidden.
+  $paragraphs_type = $paragraph->getParagraphType();
+  if ($paragraphs_type && \Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+    $behavior_element['#weight'] = 99;
+    $behavior_element['#type'] = 'details';
+    $behavior_element['#open'] = FALSE;
+    $behavior_element['#title'] = 'Additional Styles and Behaviors';
+    foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin) {
+      $behavior_element[$plugin_id] = [
+        '#type' => 'container',
+        '#tree' => TRUE,
+        // '#group' => implode('][', array_merge($element_parents, ['paragraph_behavior'])),
+      ];
+      $subform_state = SubformState::createForSubform($behavior_element[$plugin_id], $entity_form, $form_state);
+      if ($plugin_form = $plugin->buildBehaviorForm($paragraph, $behavior_element[$plugin_id], $subform_state)) {
+        $behavior_element[$plugin_id] = $plugin_form;
+        // Add the paragraphs-behavior class, so that we are able to show
+        // and hide behavior fields, depending on the active perspective.
+        $behavior_element[$plugin_id]['#attributes']['class'][] = 'paragraphs-behavior';
+      }
+    }
+  }
+
+  $entity_form['behavior_plugins'] = $behavior_element;
+  array_unshift($entity_form['#ief_element_submit'], 'd324_ace_ief_submit');
+}
+
+function d324_ace_ief_submit(&$form, &$form_state) {
+  $paragraph = $form['#entity'];
+
+  if (isset($form['behavior_plugins'])) {
+    // Submit all enabled behavior plugins.
+    $paragraphs_type = $paragraph->getParagraphType();
+    foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin_values) {
+      if (!isset($form['behavior_plugins'][$plugin_id])) {
+        $form['behavior_plugins'][$plugin_id] = [];
+      }
+      if (isset($form['behavior_plugins'][$plugin_id]) && \Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+        $subform_state = SubformState::createForSubform($form['behavior_plugins'][$plugin_id], $form_state->getCompleteForm(), $form_state);
+        if (isset($form['behavior_plugins'][$plugin_id])) {
+          $plugin_values->submitBehaviorForm($paragraph, $form['behavior_plugins'][$plugin_id], $subform_state);
+        }
+      }
+    }
+  }
+
+  $form['#entity'] = $paragraph;
 }
 
 /**

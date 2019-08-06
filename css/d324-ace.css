@@ -44,7 +44,6 @@
   max-width: 100%;
 }
 .field--widget-d324-ace-widget .ace-layout-section .ace-field-item {
-  overflow: hidden;
   border: 1px solid #ffffff;
   box-sizing: border-box;
   padding: 30px 15px 15px;
@@ -437,8 +436,8 @@ fieldset.ace-field {
   overflow: auto;
   box-sizing: border-box;
   max-height: 80vh;
-  margin-bottom: 67px;
-  padding: 0 15px 15px;
+  margin-bottom: 85px;
+  padding: 1rem;
 }
 @media screen and (max-width: 600px) {
   .field--widget-d324-ace-widget .ace-form-body {

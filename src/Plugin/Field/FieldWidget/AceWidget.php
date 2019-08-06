@@ -531,8 +531,6 @@ class AceWidget extends InlineEntityFormComplex {
 
     $element['#attached']['library'][] = 'core/drupal.dialog';
 
-
-
     $parents = $element['#field_parents'];
 
     $element_parents = $parents;
@@ -552,15 +550,6 @@ class AceWidget extends InlineEntityFormComplex {
         '#parents' => $element_parents,
       ),
     );
-
-
-
-
-
-
-
-
-
 
     return $element;
   }

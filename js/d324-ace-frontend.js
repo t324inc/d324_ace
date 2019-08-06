@@ -11,7 +11,7 @@
 
   Drupal.behaviors.d324_ace_frontend = {
     attach: function(context, settings) {
-      var cut_links = $('.d324-ace-frontend-field-paragraph-links', context).find('.d324-ace-button-cut');
+      var cut_links = $('.d324-ace-frontend-paragraph-links', context).find('.d324-ace-button-cut');
       cut_links.on('click', function (e) {
         e.preventDefault();
 

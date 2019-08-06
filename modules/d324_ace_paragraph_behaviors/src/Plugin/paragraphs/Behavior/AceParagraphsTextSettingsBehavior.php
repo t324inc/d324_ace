@@ -10,16 +10,16 @@ use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\ParagraphsBehaviorBase;
 
 /**
- * Custom paragraph wrapper class.
+ * Custom paragraph wrapper text settings.
  *
  * @ParagraphsBehavior(
- *   id = "ace_paragraph_class",
- *   label = @Translation("Paragraphs wrapper class"),
- *   description = @Translation("Allows to set wrapper class for paragraphs."),
+ *   id = "ace_paragraph_text_settings",
+ *   label = @Translation("Text settings"),
+ *   description = @Translation("Provides size, alignment, and color settings"),
  *   weight = 0,
  * )s
  */
-class AceParagraphsClassBehavior extends ParagraphsBehaviorBase {
+class AceParagraphsTextSettingsBehavior extends ParagraphsBehaviorBase {
 
   /**
    * {@inheritdoc}

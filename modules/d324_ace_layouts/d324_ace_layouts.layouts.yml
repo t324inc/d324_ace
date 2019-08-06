@@ -1,9 +1,9 @@
 layout_onecolumn:
   label: 'One Column [1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 1'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [primary]
@@ -14,9 +14,9 @@ layout_onecolumn:
 layout_twocolumn_halves:
   label: 'Two Column [1:1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -35,9 +35,9 @@ layout_twocolumn_halves:
 layout_twocolumn_onethird_twothirds:
   label: 'Two Column [1:2]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -56,9 +56,9 @@ layout_twocolumn_onethird_twothirds:
 layout_twocolumn_twothirds_onethird:
   label: 'Two Column [2:1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -78,9 +78,9 @@ layout_twocolumn_twothirds_onethird:
 layout_threecolumn_thirds:
   label: 'Three Column [1:1:1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -101,9 +101,9 @@ layout_threecolumn_thirds:
 layout_threecolumn_half_quarter_quarter:
   label: 'Three Column [2:1:1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -124,9 +124,9 @@ layout_threecolumn_half_quarter_quarter:
 layout_threecolumn_quarter_half_quarter:
   label: 'Three Column [1:2:1]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]
@@ -147,9 +147,9 @@ layout_threecolumn_quarter_half_quarter:
 layout_threecolumn_quarter_quarter_half:
   label: 'Three Column [1:1:2]'
   template: templates/layouts/columns
-  class: '\Drupal\ace_layouts\Plugin\Layout\AceLayout'
+  class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
-  library: ace_layouts/ace_layouts
+  library: d324_ace_layouts/ace_layouts
   default_region: primary
   icon_map:
     - [header]

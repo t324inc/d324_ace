@@ -1,17 +1,32 @@
-.paragraph.ace-paragraphs-behavior-background {
+.paragraph-background-wrapper {
   position: relative;
 }
-.paragraph.ace-paragraphs-behavior-background > .ace-paragraphs-behavior-background--element {
-  position: relative;
-  z-index: 20;
-}
-.paragraph.ace-paragraphs-behavior-background > .ace-paragraphs-behavior-background--image {
+.paragraph-background-wrapper .paragraph-background-container {
   position: absolute;
   top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  margin-right: 0;
-  overflow: hidden;
-  z-index: 10;
+}
+.paragraph-background-wrapper .paragraph-background-container .paragraph-background-media-overlay {
+  width: 100%;
+  height: 100%;
+}
+.paragraph-background-wrapper .paragraph-background-container .paragraph-background-media-overlay .media, .paragraph-background-wrapper .paragraph-background-container .paragraph-background-media-overlay .media img, .paragraph-background-wrapper .paragraph-background-container .paragraph-background-media-overlay .media picture, .paragraph-background-wrapper .paragraph-background-container .paragraph-background-media-overlay .media video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  object-position: top center;
+}
+.paragraph-background-wrapper .paragraph-background-container .paragraph-background-color-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /*# sourceMappingURL=background.css.map */

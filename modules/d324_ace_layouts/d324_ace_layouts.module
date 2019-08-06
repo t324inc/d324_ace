@@ -14,7 +14,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * Provide editable options for managing layout settings.
  */
-function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plugin, FieldDefinitionInterface $field_definition, $form_mode, $form, FormStateInterface $form_state) {
+function d324_ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plugin, FieldDefinitionInterface $field_definition, $form_mode, $form, FormStateInterface $form_state) {
   $element = [];
 
   // Add a 'my_setting' checkbox to the settings form for 'foo_widget' field
@@ -26,14 +26,14 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
     $element['layout_class_mode'] = [
       '#type' => 'radios',
       '#title' => t('Method for adding class to layouts'),
-      '#options' => _ace_layouts_get_mode_options(),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_class_mode', key(_ace_layouts_get_mode_options())),
+      '#options' => _d324_ace_layouts_get_mode_options(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_class_mode', key(_d324_ace_layouts_get_mode_options())),
       '#description' => t('Select the method you want to use for adding class to layouts.'),
     ];
     $element['layout_class_force'] = [
       '#type' => 'textfield',
       '#title' => t('Layout classes'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_class_force'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_class_force'),
       '#description' => t('Set the classes to add on each layout. Classes must be separated by a space.'),
       '#attributes' => [
         'placeholder' => 'layout layout-default',
@@ -41,22 +41,22 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][layout_class_mode]"]' => ['value' => 'force'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][layout_class_mode]"]' => ['value' => 'force'],
         ],
       ],
     ];
     $element['layout_class_select'] = [
       '#type' => 'textarea',
       '#title' => t('Define possibles classes'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_class_select'),
-      '#description' => _ace_layouts_select_class_description(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_class_select'),
+      '#description' => _d324_ace_layouts_select_class_description(),
       '#attributes' => [
         'placeholder' => 'layout layout--default|Default layout' . PHP_EOL . 'layout layout-reversed|Reversed layout',
       ],
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][layout_class_mode]"]' => ['value' => 'select'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][layout_class_mode]"]' => ['value' => 'select'],
         ],
       ],
     ];
@@ -64,14 +64,14 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
     $element['region_class_mode'] = [
       '#type' => 'radios',
       '#title' => t('Method for adding class to regions.'),
-      '#options' => _ace_layouts_get_mode_options(),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_class_mode', key(_ace_layouts_get_mode_options())),
+      '#options' => _d324_ace_layouts_get_mode_options(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_class_mode', key(_d324_ace_layouts_get_mode_options())),
       '#description' => t('Select the method you want to use for adding class to regions.'),
     ];
     $element['region_class_force'] = [
       '#type' => 'textfield',
       '#title' => t('Region classes'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_class_force'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_class_force'),
       '#description' => t('Set the classes to add on each region. Classes must be separated by a space.'),
       '#attributes' => [
         'placeholder' => 'region region-default',
@@ -79,22 +79,22 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][region_class_mode]"]' => ['value' => 'force'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][region_class_mode]"]' => ['value' => 'force'],
         ],
       ],
     ];
     $element['region_class_select'] = [
       '#type' => 'textarea',
       '#title' => t('Define possibles classes'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_class_select'),
-      '#description' => _ace_layouts_select_class_description(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_class_select'),
+      '#description' => _d324_ace_layouts_select_class_description(),
       '#attributes' => [
         'placeholder' => 'region region--default|Default region' . PHP_EOL . 'region region-reversed|Reversed region',
       ],
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][region_class_mode]"]' => ['value' => 'select'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][region_class_mode]"]' => ['value' => 'select'],
         ],
       ],
     ];
@@ -102,14 +102,14 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
     $element['layout_color_mode'] = [
       '#type' => 'radios',
       '#title' => t('Method for adding background color to layouts'),
-      '#options' => _ace_layouts_get_mode_options(NULL, 'background color'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_color_mode', key(_ace_layouts_get_mode_options(NULL, 'background color'))),
+      '#options' => _d324_ace_layouts_get_mode_options(NULL, 'background color'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_color_mode', key(_d324_ace_layouts_get_mode_options(NULL, 'background color'))),
       '#description' => t('Select the method you want to use for adding background color to layouts.'),
     ];
     $element['layout_color_force'] = [
       '#type' => 'textfield',
       '#title' => t('Layout background color'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_color_force'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_color_force'),
       '#description' => t('Set the background color to add on each layout.'),
       '#attributes' => [
         'placeholder' => '#fff|White',
@@ -117,22 +117,22 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][layout_color_mode]"]' => ['value' => 'force'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][layout_color_mode]"]' => ['value' => 'force'],
         ],
       ],
     ];
     $element['layout_color_select'] = [
       '#type' => 'textarea',
       '#title' => t('Define possibles background colors'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'layout_color_select'),
-      '#description' => _ace_layouts_select_class_description(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'layout_color_select'),
+      '#description' => _d324_ace_layouts_select_class_description(),
       '#attributes' => [
         'placeholder' => '#fff|White' . PHP_EOL . '#000|Black',
       ],
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][layout_color_mode]"]' => ['value' => 'select'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][layout_color_mode]"]' => ['value' => 'select'],
         ],
       ],
     ];
@@ -140,15 +140,15 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
     $element['region_color_mode'] = [
       '#type' => 'radios',
       '#title' => t('Method for adding background color to regions'),
-      '#options' => _ace_layouts_get_mode_options(NULL, 'background color'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_color_mode', key(_ace_layouts_get_mode_options(NULL, 'background color'))),
+      '#options' => _d324_ace_layouts_get_mode_options(NULL, 'background color'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_color_mode', key(_d324_ace_layouts_get_mode_options(NULL, 'background color'))),
       '#description' => t('Select the method you want to use for adding background color to regions.'),
     ];
 
     $element['region_color_force'] = [
       '#type' => 'textfield',
       '#title' => t('Region background color'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_color_force'),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_color_force'),
       '#description' => t('Set the background color to add on each region.'),
       '#attributes' => [
         'placeholder' => '#fff|White',
@@ -156,7 +156,7 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][region_color_mode]"]' => ['value' => 'force'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][region_color_mode]"]' => ['value' => 'force'],
         ],
       ],
     ];
@@ -164,15 +164,15 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
     $element['region_color_select'] = [
       '#type' => 'textarea',
       '#title' => t('Define possibles background colors'),
-      '#default_value' => $plugin->getThirdPartySetting('ace_layouts', 'region_color_select'),
-      '#description' => _ace_layouts_select_class_description(),
+      '#default_value' => $plugin->getThirdPartySetting('d324_ace_layouts', 'region_color_select'),
+      '#description' => _d324_ace_layouts_select_class_description(),
       '#attributes' => [
         'placeholder' => '#fff|White' . PHP_EOL . '#000|Black',
       ],
       '#size' => '30',
       '#states' => [
         'visible' => [
-          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][ace_layouts][region_color_mode]"]' => ['value' => 'select'],
+          ':input[name="fields[' . $field_name . '][settings_edit_form][third_party_settings][d324_ace_layouts][region_color_mode]"]' => ['value' => 'select'],
         ],
       ],
     ];
@@ -192,7 +192,7 @@ function ace_layouts_field_widget_third_party_settings_form(WidgetInterface $plu
  * @return array|mixed
  *   The options array or the value corresponding to $key.
  */
-function _ace_layouts_get_mode_options($key = NULL, $type = 'class') {
+function _d324_ace_layouts_get_mode_options($key = NULL, $type = 'class') {
   $options = [
     'manual' => t('Users can set a @type manually', ['@type' => $type]),
     'select' => t('Let users select a @type from a list', ['@type' => $type]),
@@ -209,7 +209,7 @@ function _ace_layouts_get_mode_options($key = NULL, $type = 'class') {
 /**
  * Return the description for the class select mode.
  */
-function _ace_layouts_select_class_description() {
+function _d324_ace_layouts_select_class_description() {
   $description = '<p>' . t('The possible classes a layout or region can have. Enter one value per line, in the format key|label.');
   $description .= '<br/>' . t('The key is the string which will be used as a class on the element. The label will be used on edit forms.');
   $description .= '<br/>' . t('If the key contains several classes, each class must be separated by a <strong>space</strong>.');

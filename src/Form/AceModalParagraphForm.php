@@ -6,6 +6,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\d324_ace\Ajax\AceCloseModalDialogCommand;
@@ -41,36 +42,6 @@ class AceModalParagraphForm extends AceParagraphForm {
 
     // @TODO: fix problem with form is outdated.
     $form['#token'] = FALSE;
-
-
-
-
-    $route_match = $this->getRouteMatch();
-    $paragraph = $route_match->getParameter('paragraph');
-
-
-    $element = [];
-    // Build the behavior plugins fields, do not display behaviors when
-    // translating and untranslatable fields are hidden.
-    $paragraphs_type = $paragraph->getParagraphType();
-    if ($paragraphs_type && \Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
-      $element['behavior_plugins']['#weight'] = -99;
-      foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin) {
-        $element['behavior_plugins'][$plugin_id] = [
-          '#type' => 'container',
-          // '#group' => implode('][', array_merge($element_parents, ['paragraph_behavior'])),
-        ];
-        $subform_state = SubformState::createForSubform($element['behavior_plugins'][$plugin_id], $form, $form_state);
-        if ($plugin_form = $plugin->buildBehaviorForm($paragraph, $element['behavior_plugins'][$plugin_id], $subform_state)) {
-          $element['behavior_plugins'][$plugin_id] = $plugin_form;
-          // Add the paragraphs-behavior class, so that we are able to show
-          // and hide behavior fields, depending on the active perspective.
-          $element['behavior_plugins'][$plugin_id]['#attributes']['class'][] = 'paragraphs-behavior';
-        }
-      }
-    }
-
-    $form['behavior_plugins'] = $element;
 
     // Define alternative submit callbacks using AJAX by copying the default
     // submit callbacks to the AJAX property.

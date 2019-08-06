@@ -3,7 +3,10 @@
 namespace Drupal\d324_ace\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\SubformState;
+use Drupal\Core\Render\Element;
 
 /**
  * Functionality to edit a paragraph.
@@ -17,6 +20,7 @@ class AceParagraphForm extends ContentEntityForm {
     $form = parent::form($form, $form_state);
 
     $route_match = $this->getRouteMatch();
+
     $parent_entity_type = $route_match->getParameter('parent_entity_type');
     $parent_entity_revision = $route_match->getParameter('parent_entity_revision');
     $field_name = $route_match->getParameter('field');
@@ -35,7 +39,85 @@ class AceParagraphForm extends ContentEntityForm {
       '%label' => $parent_entity_revision->label(),
     ]);
 
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+    $paragraph = $route_match->getParameter('paragraph');
+
+    $behavior_element = [];
+    // Build the behavior plugins fields, do not display behaviors when
+    // translating and untranslatable fields are hidden.
+    $paragraphs_type = $paragraph->getParagraphType();
+    if ($paragraphs_type && \Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+      $behavior_element['#weight'] = 99;
+      $behavior_element['#type'] = 'details';
+      $behavior_element['#open'] = FALSE;
+      $behavior_element['#title'] = 'Additional Styles and Behaviors';
+      foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin) {
+        $behavior_element[$plugin_id] = [
+          '#type' => 'container',
+          '#tree' => TRUE,
+          // '#group' => implode('][', array_merge($element_parents, ['paragraph_behavior'])),
+        ];
+        $subform_state = SubformState::createForSubform($behavior_element[$plugin_id], $form, $form_state);
+        if ($plugin_form = $plugin->buildBehaviorForm($paragraph, $behavior_element[$plugin_id], $subform_state)) {
+          $behavior_element[$plugin_id] = $plugin_form;
+          // Add the paragraphs-behavior class, so that we are able to show
+          // and hide behavior fields, depending on the active perspective.
+          $behavior_element[$plugin_id]['#attributes']['class'][] = 'paragraphs-behavior';
+        }
+      }
+    }
+
+    $form['behavior_plugins'] = $behavior_element;
+
+    if(!empty($form['actions'])) {
+      foreach(Element::children($form['actions']) as $action) {
+        switch($form['actions'][$action]['#value']->render()) {
+          case "Save":
+            $action_class = 'success';
+            break;
+          case "Delete":
+            $action_class = 'danger';
+            break;
+          case "Cancel":
+            $action_class = 'warning';
+            break;
+          default:
+            $action_class = 'primary';
+            break;
+        }
+        $form['actions'][$action]['#attributes'] = [
+          'class' => ["bg-$action_class"],
+        ];
+      }
+    }
+
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function copyFormValuesToEntity(EntityInterface $entity, array $form, FormStateInterface $form_state) {
+    parent::copyFormValuesToEntity($entity, $form, $form_state);
+
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
+    $paragraph = $entity;
+
+    if (isset($form['behavior_plugins'])) {
+      // Submit all enabled behavior plugins.
+      $paragraphs_type = $paragraph->getParagraphType();
+      foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin_values) {
+        if (!isset($form['behavior_plugins'][$plugin_id])) {
+          $form['behavior_plugins'][$plugin_id] = [];
+        }
+        if (isset($form['behavior_plugins'][$plugin_id]) && \Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+          $subform_state = SubformState::createForSubform($form['behavior_plugins'][$plugin_id], $form_state->getCompleteForm(), $form_state);
+          if (isset($form['behavior_plugins'][$plugin_id])) {
+            $plugin_values->submitBehaviorForm($paragraph, $form['behavior_plugins'][$plugin_id], $subform_state);
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -80,6 +162,28 @@ class AceParagraphForm extends ContentEntityForm {
     $form_state->setTemporary(['parent_entity_revision' => $parent_revision_id]);
 
     return $save_status;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    /** @var \Drupal\paragraphs\ParagraphInterface $entity */
+    $entity = $this->buildEntity($form, $form_state);
+
+    $paragraphs_type = $entity->getParagraphType();
+    if (\Drupal::currentUser()->hasPermission('edit behavior plugin settings')) {
+      foreach ($paragraphs_type->getEnabledBehaviorPlugins() as $plugin_id => $plugin_values) {
+        if (!empty($form['behavior_plugins'][$plugin_id])) {
+          $subform_state = SubformState::createForSubform($form['behavior_plugins'][$plugin_id], $form_state->getCompleteForm(), $form_state);
+          $plugin_values->validateBehaviorForm($entity, $form['behavior_plugins'][$plugin_id], $subform_state);
+        }
+      }
+    }
+
+    return $entity;
   }
 
   /**

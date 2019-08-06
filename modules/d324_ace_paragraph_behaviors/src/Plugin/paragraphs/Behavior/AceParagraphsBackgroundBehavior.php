@@ -2,13 +2,16 @@
 
 namespace Drupal\d324_ace_paragraph_behaviors\Plugin\paragraphs\Behavior;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\ParagraphsBehaviorBase;
 
 /**
@@ -67,6 +70,74 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
         ],
       ];
     }
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
+    $moduleHandler = \Drupal::service('module_handler');
+    if ($moduleHandler->moduleExists('color_field')){
+      $form['color_description'] = [
+        '#markup' => '<p><small>Add 1 color for a solid color background.  Add 2 colors to form a gradient background.</small></p>',
+      ];
+      foreach([1,2] as $delta) {
+        $uid = Html::getUniqueId( 'color-field-field-color_' . $delta);
+        $form['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
+        $form['background_color_' . $delta] = [
+          '#type' => 'container',
+          '#title' => 'Color ' . $delta . ': ',
+          '#tree' => TRUE,
+          '#attached' => [
+            'drupalSettings' => [
+              'color_field' => [
+                'color_field_widget_spectrum' => [
+                  $uid => [
+                    'show_input' => TRUE,
+                    'show_palette' => TRUE,
+                    'palette' => '["#333333","#FCFCFC","#005696","#555555","#11689B","#FEC114","#AEBED7","#175088","#F89406","#DC3545","#FEC114","#17A2B8","#28A745","#111111","#F0F0F0","#000000","#FFFFFF"]',
+                    'show_buttons' => TRUE,
+                    'allow_empty' => TRUE,
+                    'show_palette_only' => FALSE,
+                    'show_alpha' => TRUE,
+                  ],
+                ],
+              ],
+            ],
+          ],
+          'color' => [
+            '#title' => 'Color Value ' . $delta,
+            '#type' => 'textfield',
+            '#maxlength' => 7,
+            '#size' => 7,
+            '#attributes' => [
+              'class' => [
+                'js-color-field-widget-spectrum__color',
+              ],
+            ],
+            '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_' . $delta)['color'],
+          ],
+          'opacity' => [
+            '#type' => 'number',
+            '#min' => 0,
+            '#max' => 1,
+            '#step' => .1,
+            '#attributes' => [
+              'class' => [
+                'js-color-field-widget-spectrum__opacity',
+              ],
+            ],
+            '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_' . $delta)['opacity'],
+          ],
+          '#show_alpha' => TRUE,
+          '#attributes' => [
+            'id' => $uid,
+            'class' => 'js-color-field-widget-spectrum',
+          ],
+        ];
+      }
+    }
 
     return $form;
   }
@@ -91,16 +162,57 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
    * {@inheritdoc}
    */
   public function view(array &$build, Paragraph $paragraphs_entity, EntityViewDisplayInterface $display, $view_mode) {
-    $build['#attributes']['class'][] = 'ace-paragraphs-behavior-background';
     $build['#attached']['library'][] = 'd324_ace_paragraph_behaviors/background';
-    foreach (Element::children($build) as $field) {
-      if ($field == $this->configuration['background_media_field']) {
-        // Put the selected field into the background.
-        $build[$field]['#attributes']['class'][] = 'ace-paragraphs-behavior-background--image';
+  }
+
+  public function preprocess(&$variables) {
+    parent::preprocess($variables);
+    $background_field = null;
+    $paragraph = $variables['paragraph'];
+    $media = $paragraph->get($this->configuration['background_media_field'])->first();
+    if(!empty($media)) {
+      foreach ($variables as $key => $var) {
+        if (is_array($var) && isset($var[$this->configuration['background_media_field']])) {
+          $background_field = $var[$this->configuration['background_media_field']];
+          unset($variables[$key][$this->configuration['background_media_field']]);
+          $variables['use_wrapper'] = TRUE;
+          if(empty($variables['wrapper_attributes'])) {
+            $variables['wrapper_attributes'] = new Attribute(array());
+          }
+          $variables['wrapper_attributes']->addClass('paragraph-background-wrapper');
+        }
       }
-      else {
-        // Identify all other elements to put them on top of the background.
-        $build[$field]['#attributes']['class'][] = 'ace-paragraphs-behavior-background--element';
+    }
+    if($background_field) {
+      $background_field['#attributes']['class'][] = 'paragraph-background-media-overlay';
+      $variables['background'][] = $background_field;
+    }
+    $variables['background']['#type'] = 'container';
+    $variables['background']['#attributes'] = [
+      'class' => ['paragraph-background-container'],
+    ];
+    if(!empty($paragraph)) {
+      $background_color_1 = $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_1');
+      $background_color_2 = $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_2');
+      if($background_color_1['color'] && $background_color_2['color']) {
+        list($r1, $g1, $b1) = sscanf($background_color_1['color'], "#%02x%02x%02x");
+        $a1 = $background_color_1['opacity'];
+        list($r2, $g2, $b2) = sscanf($background_color_2['color'], "#%02x%02x%02x");
+        $a2 = $background_color_2['opacity'];
+        $style = "background: linear-gradient(rgba($r1,$g1,$b1,$a1),rgba($r2,$g2,$b2,$a2)); ";
+      } elseif($background_color_1['color']) {
+        list($r1, $g1, $b1) = sscanf($background_color_1['color'], "#%02x%02x%02x");
+        $a1 = $background_color_1['opacity'];
+        $style = "background: rgba($r1,$g1,$b1,$a1); ";
+      }
+      if(!empty($style)) {
+        $variables['background'][] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'style' => $style,
+            'class' => ['paragraph-background-color-overlay'],
+          ],
+        ];
       }
     }
   }
@@ -111,6 +223,14 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
   public function defaultConfiguration() {
     return [
       'background_media_field' => '',
+      'background_color_1' => [
+        'color' => '',
+        'opacity' => '',
+      ],
+      'background_color_2' => [
+        'color' => '',
+        'opacity' => '',
+      ],
     ];
   }
 

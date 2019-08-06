@@ -26,6 +26,7 @@
   clear: both !important;
   padding-right: 0 !important;
 }
+
 .layout-region-node-secondary {
   float: none !important;
   width: auto !important;
@@ -33,10 +34,18 @@
 }
 
 .layout-node-form .layout-region-node-footer {
-  padding: 0 1rem 1rem;
+  padding: 0 .5rem .5rem;
+}
+
+.entity-meta__header .form-group {
+  display: inline-block !important;
+  margin-right: 1rem;
+  margin-top: 0;
 }
 
 .layout-node-form .layout-region-node-footer__content {
+  padding-top: .5rem;
+  margin-top: 0;
   border-top: none;
   display: flex;
   flex-direction: row-reverse;
@@ -56,6 +65,7 @@
   margin: 0 0 0 1rem;
   display: flex;
   white-space: nowrap;
+  flex-wrap: nowrap;
   align-items: center;
 }
 
@@ -65,4 +75,26 @@
 
 .layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper > div label {
   margin: 0 .25rem 0 0;
+}
+
+.nav-tabs .nav-link {
+  padding: .25rem 1rem;
+}
+
+details.form-wrapper.card > .card-body {
+  padding: .5rem 0;
+}
+
+details.form-wrapper.card > .card-body > .form-item {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.layout-node-form .layout-region-node-footer__content .form-actions {
+  margin: 0;
+  display: flex;
+}
+
+.layout-node-form .layout-region-node-footer__content .form-actions input {
+  margin-right: .5rem;
 }
