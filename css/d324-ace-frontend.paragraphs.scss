@@ -49,6 +49,8 @@
   .d324-ace-frontend-links-region {
     display: flex;
     padding: .25rem;
+    flex-grow: 1;
+    flex-basis: 0;
   }
 
   .d324-ace-frontend-links-top {

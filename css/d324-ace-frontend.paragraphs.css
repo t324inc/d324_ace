@@ -42,6 +42,8 @@
 .d324-ace-frontend-layout-wrapper .d324-ace-frontend-links-region {
   display: flex;
   padding: 0.25rem;
+  flex-grow: 1;
+  flex-basis: 0;
 }
 .d324-ace-frontend-paragraph-wrapper .d324-ace-frontend-links-top,
 .d324-ace-frontend-layout-wrapper .d324-ace-frontend-links-top {
