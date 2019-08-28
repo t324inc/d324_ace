@@ -20,7 +20,7 @@ use Drupal\paragraphs\ParagraphsBehaviorBase;
  * @ParagraphsBehavior(
  *   id = "ace_background",
  *   label = @Translation("Background"),
- *   description = @Translation("Media to be used as background for the paragraph."),
+ *   description = @Translation("Background settings for the paragraph."),
  *   weight = 3
  * )
  */
@@ -58,18 +58,6 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
         '#default_value' => count($media_field_options) == 1 ? key($media_field_options) : $this->configuration['background_media_field'],
       ];
     }
-    else {
-      $form['message'] = [
-        '#type' => 'container',
-        '#markup' => $this->t('No media field type available. Please add at least one in the <a href=":link">Manage fields</a> page.', [
-          ':link' => Url::fromRoute("entity.{$paragraphs_type->getEntityType()->getBundleOf()}.field_ui_fields", [$paragraphs_type->getEntityTypeId() => $paragraphs_type->id()])
-            ->toString(),
-        ]),
-        '#attributes' => [
-          'class' => ['messages messages--error'],
-        ],
-      ];
-    }
     return $form;
   }
 
@@ -79,12 +67,16 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
   public function buildBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
     $moduleHandler = \Drupal::service('module_handler');
     if ($moduleHandler->moduleExists('color_field')){
+      $form['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
+      $form['#type'] = 'details';
+      $form['#title'] = $this->t('Background Image/Color Settings');
+      $form['#open'] = FALSE;
+      $form['#weight'] = 3;
       $form['color_description'] = [
         '#markup' => '<p><small>Add 1 color for a solid color background.  Add 2 colors to form a gradient background.</small></p>',
       ];
       foreach([1,2] as $delta) {
         $uid = Html::getUniqueId( 'color-field-field-color_' . $delta);
-        $form['#attached']['library'][] = 'color_field/color-field-widget-spectrum';
         $form['background_color_' . $delta] = [
           '#type' => 'container',
           '#title' => 'Color ' . $delta . ': ',
@@ -96,7 +88,7 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
                   $uid => [
                     'show_input' => TRUE,
                     'show_palette' => TRUE,
-                    'palette' => '["#333333","#FCFCFC","#005696","#555555","#11689B","#FEC114","#AEBED7","#175088","#F89406","#DC3545","#FEC114","#17A2B8","#28A745","#111111","#F0F0F0","#000000","#FFFFFF"]',
+                    'palette' => '["#333333","#FCFCFC","#1F2949","#555555","#11689B","#FEC114","#AEBED7","#175088","#F89406","#DC3545","#FEC114","#17A2B8","#28A745","#111111","#F0F0F0","#000000","#FFFFFF"]',
                     'show_buttons' => TRUE,
                     'allow_empty' => TRUE,
                     'show_palette_only' => FALSE,
@@ -146,9 +138,7 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    if (!$form_state->getValue('background_media_field')) {
-      $form_state->setErrorByName('message', $this->t('The Background plugin cannot be enabled without a media field.'));
-    }
+
   }
 
   /**
@@ -169,28 +159,32 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
     parent::preprocess($variables);
     $background_field = null;
     $paragraph = $variables['paragraph'];
-    $media = $paragraph->get($this->configuration['background_media_field'])->first();
-    if(!empty($media)) {
-      foreach ($variables as $key => $var) {
-        if (is_array($var) && isset($var[$this->configuration['background_media_field']])) {
-          $background_field = $var[$this->configuration['background_media_field']];
-          unset($variables[$key][$this->configuration['background_media_field']]);
-          $variables['use_wrapper'] = TRUE;
-          if(empty($variables['wrapper_attributes'])) {
-            $variables['wrapper_attributes'] = new Attribute(array());
+    if(!empty($this->configuration['background_media_field'])) {
+      if(!empty($paragraph->get($this->configuration['background_media_field']))) {
+        $media = $paragraph->get($this->configuration['background_media_field'])->first();
+      }
+      if(!empty($media)) {
+        foreach ($variables as $key => $var) {
+          if (is_array($var) && isset($var[$this->configuration['background_media_field']])) {
+            $background_field = $var[$this->configuration['background_media_field']];
+            unset($variables[$key][$this->configuration['background_media_field']]);
+            $variables['use_wrapper'] = TRUE;
+            if(empty($variables['wrapper_attributes'])) {
+              $variables['wrapper_attributes'] = new Attribute(array());
+            }
+            $variables['wrapper_attributes']->addClass('paragraph-background-wrapper');
           }
-          $variables['wrapper_attributes']->addClass('paragraph-background-wrapper');
         }
       }
+      if($background_field) {
+        $background_field['#attributes']['class'][] = 'paragraph-background-media-overlay';
+        $variables['background'][] = $background_field;
+        $variables['background']['#type'] = 'container';
+        $variables['background']['#attributes'] = [
+          'class' => ['paragraph-background-container'],
+        ];
+      }
     }
-    if($background_field) {
-      $background_field['#attributes']['class'][] = 'paragraph-background-media-overlay';
-      $variables['background'][] = $background_field;
-    }
-    $variables['background']['#type'] = 'container';
-    $variables['background']['#attributes'] = [
-      'class' => ['paragraph-background-container'],
-    ];
     if(!empty($paragraph)) {
       $background_color_1 = $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_1');
       $background_color_2 = $paragraph->getBehaviorSetting($this->getPluginId(), 'background_color_2');
@@ -232,6 +226,13 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
         'opacity' => '',
       ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary(Paragraph $paragraph) {
+    return '';
   }
 
 }

@@ -6,6 +6,7 @@ use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Layout\LayoutDefault;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityFormInterface;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Layout class with various formatting options for custom D324 Ace layouts.
@@ -20,6 +21,7 @@ class AceLayout extends LayoutDefault implements PluginFormInterface {
     $configuration += [
       'layout_classes' => '',
       'layout_bg_color' => '',
+      'layout_columns_alignment' => 'top',
     ];
     foreach ($this->getPluginDefinition()->getRegions() as $region => $region_info) {
       $configuration[$region]['classes'] = '';
@@ -42,6 +44,14 @@ class AceLayout extends LayoutDefault implements PluginFormInterface {
 
     if (!empty($configuration['layout_bg_color'])) {
       $build['#attributes']['style'] = 'background-color: ' . $configuration['layout_bg_color'];
+    }
+
+    if (!empty($configuration['layout_columns_alignment'])) {
+      $build['#main_attributes'] = new Attribute([
+        'class' => [
+          $configuration['layout_columns_alignment'],
+        ],
+      ]);
     }
 
     foreach ($this->getPluginDefinition()->getRegionNames() as $region_name) {
@@ -166,6 +176,18 @@ class AceLayout extends LayoutDefault implements PluginFormInterface {
         break;
     }
 
+    $form_item['layout_columns_alignment'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Columns Vertical Alignment'),
+      '#description' => $this->t('Set the vertical alignment of the columns'),
+      '#options' => [
+        'align-items-start' => 'Align Top',
+        'align-items-center' => 'Align Center',
+        'align-items-end' => 'Align Bottom',
+      ],
+      '#default_value' => !empty($config['layout_columns_alignment']) ? $config['layout_columns_alignment'] : 'top',
+    ];
+
     foreach ($this->getPluginDefinition()->getRegions() as $region => $region_info) {
       $region_label = $region_info['label'];
       $form_item[$region] = [
@@ -263,6 +285,7 @@ class AceLayout extends LayoutDefault implements PluginFormInterface {
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $this->configuration['layout_classes'] = $form_state->getValue('layout_classes');
     $this->configuration['layout_bg_color'] = $form_state->getValue('layout_bg_color');
+    $this->configuration['layout_columns_alignment'] = $form_state->getValue('layout_columns_alignment');
     $this->configuration['column_priority'] = $form_state->getValue('column_priority');
     foreach ($this->getPluginDefinition()->getRegions() as $region => $region_info) {
       $this->configuration[$region]['classes'] = $form_state->getValue([$region, 'classes']);

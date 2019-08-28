@@ -19,9 +19,9 @@
   top: 0;
   left: 0;
   object-fit: cover;
-  object-position: top center;
+  object-position: center center;
 }
-.paragraph-background-wrapper .paragraph-background-container .paragraph-background-color-overlay {
+.paragraph-background-wrapper .paragraph-background-color-overlay {
   width: 100%;
   height: 100%;
   position: absolute;

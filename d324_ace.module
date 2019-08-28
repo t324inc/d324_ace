@@ -6,7 +6,9 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -101,6 +103,7 @@ function d324_ace_preprocess_field(&$vars) {
       count($vars['items']) < $field_storage_definition->getCardinality());
 
     $delta = 0;
+    $layout_delta = 0;
     $item_delta = 0;
 
     $field_wrapper_id = Html::getUniqueId('ace--' . $parent->id() );
@@ -119,128 +122,48 @@ function d324_ace_preprocess_field(&$vars) {
       }
 
       $layout_content = $layout_item['content'];
-      $layout_regions = $layout_content['regions'];
+      $layout_paragraph = $layout_item['content']['#paragraph'];
       $layout_options = $layout_content['#ace_layout_options']['options'];
 
       $item_delta++;
 
-      foreach($layout_regions as $region_name => $layout_region) {
+      if(!empty($layout_content['regions'])) {
+        $layout_regions = $layout_content['regions'];
+        foreach($layout_regions as $region_name => $layout_region) {
 
-        $region_wrapper_id = Html::getUniqueId('ace-region-' . $region_name);
+          $region_wrapper_id = Html::getUniqueId('ace-region-' . $region_name);
 
-        // Attach the region wrapper ID in a data-attribute.
-        $vars['items'][$layout_item_id]['content']['regions'][$region_name]['#attributes']['data-ace-field-paragraph-region-wrapper'] = $region_wrapper_id;
+          // Attach the region wrapper ID in a data-attribute.
+          $vars['items'][$layout_item_id]['content']['regions'][$region_name]['#attributes']['data-ace-field-paragraph-region-wrapper'] = $region_wrapper_id;
 
-        $region_index = 0;
+          $region_index = 0;
 
-        foreach($layout_region as $nested_paragraph) {
+          foreach($layout_region as $nested_paragraph) {
 
-          $nested_paragraph_entity = $nested_paragraph['#paragraph'];
+            $nested_paragraph_entity = $nested_paragraph['#paragraph'];
 
-          $paragraph_to_cut = $nested_paragraph_entity;
+            $paragraph_to_cut = $nested_paragraph_entity;
 
-          $links = [
-            'top' => [
-              'left' => [],
-              'center' => [],
-              'right' => [],
-            ],
-            'bottom' => [
-              'left' => [],
-              'center' => [],
-              'right' => [],
-            ],
-          ];
-
-          if (!$translated_parent && $can_add_more_fields) {
-            // Add link - before.
-            $links['top']['center']['add_before'] = [
-              '#type' => 'link',
-              '#icon' => 'add',
-              '#title' => t('Add before'),
-              '#url' => Url::fromRoute('d324_ace.modal.add_form', [
-                'parent_entity_type' => $parent->getEntityType()->id(),
-                'parent_entity_bundle' => $parent->bundle(),
-                'parent_entity_revision' => $parent_revision_id,
-                'field' => $vars['field_name'],
-                'field_wrapper_id' => $field_wrapper_id,
-                'delta' => $item_delta,
-                'paragraph' => $nested_paragraph_entity->id(),
-                'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
-                'layout_paragraph' => $layout_item_id,
-                'layout_region' => $region_name,
-                'position' => 'before',
-                'js' => 'nojs',
-              ]),
-              '#attributes' => [
-                'class' => ['use-ajax', 'd324-ace-button'],
-                'data-dialog-type' => 'dialog',
-                'data-dialog-renderer' => 'off_canvas',
-                'data-dialog-options' => '{"width":"400px"}',
-                'title' => t('Add section above'),
+            $links = [
+              'top' => [
+                'left' => [],
+                'center' => [],
+                'right' => [],
+              ],
+              'bottom' => [
+                'left' => [],
+                'center' => [],
+                'right' => [],
               ],
             ];
 
-            // Add link - after.
-            $links['bottom']['center']['add_after'] = [
-              '#type' => 'link',
-              '#icon' => 'add',
-              '#title' => t('Add after'),
-              '#url' => Url::fromRoute('d324_ace.modal.add_form', [
-                'parent_entity_type' => $parent->getEntityType()->id(),
-                'parent_entity_bundle' => $parent->bundle(),
-                'parent_entity_revision' => $parent_revision_id,
-                'field' => $vars['field_name'],
-                'field_wrapper_id' => $field_wrapper_id,
-                'delta' => $item_delta,
-                'paragraph' => $nested_paragraph_entity->id(),
-                'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
-                'layout_paragraph' => $layout_item_id,
-                'layout_region' => $region_name,
-                'position' => 'after',
-                'js' => 'nojs',
-              ]),
-              '#attributes' => [
-                'class' => ['use-ajax', 'd324-ace-button'],
-                'data-dialog-type' => 'dialog',
-                'data-dialog-renderer' => 'off_canvas',
-                'data-dialog-options' => '{"width":"400px"}',
-                'title' => t('Add section below'),
-              ],
-            ];
-          }
-
-          // Edit link.
-          $links['top']['right']['edit'] = [
-            '#type' => 'link',
-            '#icon' => 'edit',
-            '#title' => t('Edit'),
-            '#url' => Url::fromRoute('d324_ace.modal.edit_form', [
-              'parent_entity_type' => $parent->getEntityType()->id(),
-              'parent_entity_bundle' => $parent->bundle(),
-              'parent_entity_revision' => $parent_revision_id,
-              'field' => $vars['field_name'],
-              'field_wrapper_id' => $field_wrapper_id,
-              'delta' => $item_delta,
-              'paragraph' => $nested_paragraph_entity->id(),
-              'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
-              'layout_paragraph' => $layout_item_id,
-              'layout_region' => $region_name,
-              'js' => 'nojs',
-            ]),
-            '#attributes' => [
-              'class' => ['use-ajax', 'd324-ace-button'],
-              'data-dialog-type' => 'modal',
-              'title' => t('Edit section'),
-            ],
-          ];
-          if ($translated_parent) {
-            if ($nested_paragraph_entity->isDefaultTranslation()) {
-              $links['top']['right']['edit'] = [
+            if (!$translated_parent && $can_add_more_fields) {
+              // Add link - before.
+              $links['top']['center']['add_before'] = [
                 '#type' => 'link',
-                '#icon' => 'edit',
-                '#title' => t('Translate'),
-                '#url' => Url::fromRoute('d324_ace.modal.translate_form', [
+                '#icon' => 'add',
+                '#title' => t('Add before'),
+                '#url' => Url::fromRoute('d324_ace.modal.add_form', [
                   'parent_entity_type' => $parent->getEntityType()->id(),
                   'parent_entity_bundle' => $parent->bundle(),
                   'parent_entity_revision' => $parent_revision_id,
@@ -251,53 +174,53 @@ function d324_ace_preprocess_field(&$vars) {
                   'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
                   'layout_paragraph' => $layout_item_id,
                   'layout_region' => $region_name,
+                  'position' => 'before',
                   'js' => 'nojs',
                 ]),
                 '#attributes' => [
                   'class' => ['use-ajax', 'd324-ace-button'],
-                  'data-dialog-type' => 'modal',
-                  'title' => t('Translate section'),
+                  'data-dialog-type' => 'dialog',
+                  'data-dialog-renderer' => 'off_canvas',
+                  'data-dialog-options' => '{"width":"400px"}',
+                  'title' => t('Add section above'),
                 ],
               ];
-            }
-            if (!$nested_paragraph_entity->isTranslatable()) {
-              unset($links['top']['right']['edit']);
-            }
-          }
 
-          if (!$translated_parent) {
-            if (count($element['#items']) > 1) {
-              // Cut link.
-              $links['top']['left']['cut'] = [
+              // Add link - after.
+              $links['bottom']['center']['add_after'] = [
                 '#type' => 'link',
-                '#title' => t('Cut'),
-                '#icon' => 'cut',
-                '#url' => Url::fromRoute('d324_ace.cut', [
+                '#icon' => 'add',
+                '#title' => t('Add after'),
+                '#url' => Url::fromRoute('d324_ace.modal.add_form', [
                   'parent_entity_type' => $parent->getEntityType()->id(),
                   'parent_entity_bundle' => $parent->bundle(),
                   'parent_entity_revision' => $parent_revision_id,
                   'field' => $vars['field_name'],
                   'field_wrapper_id' => $field_wrapper_id,
                   'delta' => $item_delta,
-                  'paragraph_to_cut' => $nested_paragraph_entity->id(),
+                  'paragraph' => $nested_paragraph_entity->id(),
                   'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                  'layout_paragraph' => $layout_item_id,
+                  'layout_region' => $region_name,
+                  'position' => 'after',
                   'js' => 'nojs',
                 ]),
                 '#attributes' => [
-                  'data-ace-field-wrapper' => $field_wrapper_id,
-                  'class' => ['d324-ace-button'],
-                  'data-dialog-type' => 'modal',
-                  'title' => t('Cut section'),
+                  'class' => ['use-ajax', 'd324-ace-button'],
+                  'data-dialog-type' => 'dialog',
+                  'data-dialog-renderer' => 'off_canvas',
+                  'data-dialog-options' => '{"width":"400px"}',
+                  'title' => t('Add section below'),
                 ],
               ];
             }
 
-            // Delete link.
-            $links['top']['right']['delete'] = [
+            // Edit link.
+            $links['top']['right']['edit'] = [
               '#type' => 'link',
-              '#icon' => 'delete',
-              '#title' => t('Delete'),
-              '#url' => Url::fromRoute('d324_ace.modal.delete_form', [
+              '#icon' => 'edit',
+              '#title' => t('Edit'),
+              '#url' => Url::fromRoute('d324_ace.modal.edit_form', [
                 'parent_entity_type' => $parent->getEntityType()->id(),
                 'parent_entity_bundle' => $parent->bundle(),
                 'parent_entity_revision' => $parent_revision_id,
@@ -306,111 +229,196 @@ function d324_ace_preprocess_field(&$vars) {
                 'delta' => $item_delta,
                 'paragraph' => $nested_paragraph_entity->id(),
                 'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                'layout_paragraph' => $layout_item_id,
+                'layout_region' => $region_name,
                 'js' => 'nojs',
               ]),
               '#attributes' => [
                 'class' => ['use-ajax', 'd324-ace-button'],
                 'data-dialog-type' => 'modal',
-                'title' => t('Delete section'),
+                'title' => t('Edit section'),
               ],
             ];
-            if ($field_definition->isRequired() && count($element['#items']) == 1) {
-              $links['top']['right']['delete']['#title'] = t('Cannot remove the last item of a required field');
-              $links['top']['right']['delete']['#url'] = Url::fromUserInput('#');
-              $links['top']['right']['delete']['#attributes']['class'][] = 'disabled';
-              $links['top']['right']['delete']['#attributes']['title'] = t('Cannot remove the last item of a required field');
+            if ($translated_parent) {
+              if ($nested_paragraph_entity->isDefaultTranslation()) {
+                $links['top']['right']['edit'] = [
+                  '#type' => 'link',
+                  '#icon' => 'edit',
+                  '#title' => t('Translate'),
+                  '#url' => Url::fromRoute('d324_ace.modal.translate_form', [
+                    'parent_entity_type' => $parent->getEntityType()->id(),
+                    'parent_entity_bundle' => $parent->bundle(),
+                    'parent_entity_revision' => $parent_revision_id,
+                    'field' => $vars['field_name'],
+                    'field_wrapper_id' => $field_wrapper_id,
+                    'delta' => $item_delta,
+                    'paragraph' => $nested_paragraph_entity->id(),
+                    'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                    'layout_paragraph' => $layout_item_id,
+                    'layout_region' => $region_name,
+                    'js' => 'nojs',
+                  ]),
+                  '#attributes' => [
+                    'class' => ['use-ajax', 'd324-ace-button'],
+                    'data-dialog-type' => 'modal',
+                    'title' => t('Translate section'),
+                  ],
+                ];
+              }
+              if (!$nested_paragraph_entity->isTranslatable()) {
+                unset($links['top']['right']['edit']);
+              }
             }
 
-            // Paste link - before.
-            $links['top']['center']['paste_before'] = [
-              '#type' => 'link',
-              '#icon' => 'paste',
-              '#title' => t('Paste'),
-              '#url' => Url::fromRoute('d324_ace.paste', [
-                'parent_entity_type' => $parent->getEntityType()->id(),
-                'parent_entity_bundle' => $parent->bundle(),
-                'parent_entity_revision' => $parent_revision_id,
-                'field' => $vars['field_name'],
-                'field_wrapper_id' => $field_wrapper_id,
-                'delta' => $item_delta,
-                'position' => 'before',
-                'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
-                'paragraph_to_paste' => $paragraph_to_cut->id(),
-                'layout_paragraph' => $layout_item_id,
-                'layout_region' => $region_name,
-                'js' => 'nojs',
-              ]),
-              '#attributes' => [
-                'data-ace-field-wrapper' => $field_wrapper_id,
-                'class' => ['use-ajax', 'd324-ace-button', 'd324-ace-paste'],
-                'data-dialog-type' => 'modal',
-                'title' => t('Paste above'),
+            if (!$translated_parent) {
+              if (count($element['#items']) > 1) {
+                // Cut link.
+                $links['top']['left']['cut'] = [
+                  '#type' => 'link',
+                  '#title' => t('Cut'),
+                  '#icon' => 'cut',
+                  '#url' => Url::fromRoute('d324_ace.cut', [
+                    'parent_entity_type' => $parent->getEntityType()->id(),
+                    'parent_entity_bundle' => $parent->bundle(),
+                    'parent_entity_revision' => $parent_revision_id,
+                    'field' => $vars['field_name'],
+                    'field_wrapper_id' => $field_wrapper_id,
+                    'delta' => $item_delta,
+                    'paragraph_to_cut' => $nested_paragraph_entity->id(),
+                    'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                    'js' => 'nojs',
+                  ]),
+                  '#attributes' => [
+                    'data-ace-field-wrapper' => $field_wrapper_id,
+                    'class' => ['d324-ace-button'],
+                    'data-dialog-type' => 'modal',
+                    'title' => t('Cut section'),
+                  ],
+                ];
+              }
+
+              // Delete link.
+              $links['top']['right']['delete'] = [
+                '#type' => 'link',
+                '#icon' => 'delete',
+                '#title' => t('Delete'),
+                '#url' => Url::fromRoute('d324_ace.modal.delete_form', [
+                  'parent_entity_type' => $parent->getEntityType()->id(),
+                  'parent_entity_bundle' => $parent->bundle(),
+                  'parent_entity_revision' => $parent_revision_id,
+                  'field' => $vars['field_name'],
+                  'field_wrapper_id' => $field_wrapper_id,
+                  'delta' => $item_delta,
+                  'paragraph' => $nested_paragraph_entity->id(),
+                  'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                  'js' => 'nojs',
+                ]),
+                '#attributes' => [
+                  'class' => ['use-ajax', 'd324-ace-button'],
+                  'data-dialog-type' => 'modal',
+                  'title' => t('Delete section'),
+                ],
+              ];
+              if ($field_definition->isRequired() && count($element['#items']) == 1) {
+                $links['top']['right']['delete']['#title'] = t('Cannot remove the last item of a required field');
+                $links['top']['right']['delete']['#url'] = Url::fromUserInput('#');
+                $links['top']['right']['delete']['#attributes']['class'][] = 'disabled';
+                $links['top']['right']['delete']['#attributes']['title'] = t('Cannot remove the last item of a required field');
+              }
+
+              // Paste link - before.
+              $links['top']['center']['paste_before'] = [
+                '#type' => 'link',
+                '#icon' => 'paste',
+                '#title' => t('Paste'),
+                '#url' => Url::fromRoute('d324_ace.paste', [
+                  'parent_entity_type' => $parent->getEntityType()->id(),
+                  'parent_entity_bundle' => $parent->bundle(),
+                  'parent_entity_revision' => $parent_revision_id,
+                  'field' => $vars['field_name'],
+                  'field_wrapper_id' => $field_wrapper_id,
+                  'delta' => $item_delta,
+                  'position' => 'before',
+                  'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                  'paragraph_to_paste' => $paragraph_to_cut->id(),
+                  'layout_paragraph' => $layout_item_id,
+                  'layout_region' => $region_name,
+                  'js' => 'nojs',
+                ]),
+                '#attributes' => [
+                  'data-ace-field-wrapper' => $field_wrapper_id,
+                  'class' => ['use-ajax', 'd324-ace-button', 'd324-ace-paste'],
+                  'data-dialog-type' => 'modal',
+                  'title' => t('Paste above'),
+                ],
+              ];
+
+              // Paste link - after.
+              $links['bottom']['center']['paste_after'] = [
+                '#type' => 'link',
+                '#icon' => 'paste',
+                '#title' => t('Paste'),
+                '#url' => Url::fromRoute('d324_ace.paste', [
+                  'parent_entity_type' => $parent->getEntityType()->id(),
+                  'parent_entity_bundle' => $parent->bundle(),
+                  'parent_entity_revision' => $parent_revision_id,
+                  'field' => $vars['field_name'],
+                  'field_wrapper_id' => $field_wrapper_id,
+                  'delta' => $item_delta,
+                  'position' => 'after',
+                  'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+                  'paragraph_to_paste' => $paragraph_to_cut->id(),
+                  'layout_paragraph' => $layout_item_id,
+                  'layout_region' => $region_name,
+                  'js' => 'nojs',
+                ]),
+                '#attributes' => [
+                  'data-ace-field-wrapper' => $field_wrapper_id,
+                  'class' => ['use-ajax', 'd324-ace-button', 'd324-ace-paste'],
+                  'data-dialog-type' => 'dialog',
+                  'data-dialog-renderer' => 'off_canvas',
+                  'data-dialog-options' => '{"width":"400px"}',
+                  'title' => t('Paste below'),
+                ],
+              ];
+            }
+
+            $context = [
+              'paragraph' => $nested_paragraph_entity,
+              'parent' => $parent,
+              'delta' => $item_delta,
+              'field_definition' => $field_definition,
+            ];
+
+            \Drupal::moduleHandler()->alter('ik', $links, $context);
+
+            $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#attached'] = [
+              'library' => [
+                'core/drupal.dialog.ajax',
+                'd324_ace/d324_ace_frontend',
+                'paragraphs/drupal.paragraphs.widget',
               ],
             ];
 
-            // Paste link - after.
-            $links['bottom']['center']['paste_after'] = [
-              '#type' => 'link',
-              '#icon' => 'paste',
-              '#title' => t('Paste'),
-              '#url' => Url::fromRoute('d324_ace.paste', [
-                'parent_entity_type' => $parent->getEntityType()->id(),
-                'parent_entity_bundle' => $parent->bundle(),
-                'parent_entity_revision' => $parent_revision_id,
-                'field' => $vars['field_name'],
-                'field_wrapper_id' => $field_wrapper_id,
-                'delta' => $item_delta,
-                'position' => 'after',
-                'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
-                'paragraph_to_paste' => $paragraph_to_cut->id(),
-                'layout_paragraph' => $layout_item_id,
-                'layout_region' => $region_name,
-                'js' => 'nojs',
-              ]),
-              '#attributes' => [
-                'data-ace-field-wrapper' => $field_wrapper_id,
-                'class' => ['use-ajax', 'd324-ace-button', 'd324-ace-paste'],
-                'data-dialog-type' => 'dialog',
-                'data-dialog-renderer' => 'off_canvas',
-                'data-dialog-options' => '{"width":"400px"}',
-                'title' => t('Paste below'),
-              ],
-            ];
+            // $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#theme_wrappers'] = ['d324_ace_frontend_paragraph_wrapper'];
+
+            $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#paragraph_links'] = $links;
+
+            if (
+              $nested_paragraph_entity->isTranslatable() &&
+              $nested_paragraph_entity->hasTranslation($langcode)
+            ) {
+              $layout_region[$delta]['#paragraph'] = $nested_paragraph_entity->getTranslation($langcode);
+            }
+
+            $region_index++;
+            $delta++;
+            $item_delta++;
+
           }
-
-          $context = [
-            'paragraph' => $nested_paragraph_entity,
-            'parent' => $parent,
-            'delta' => $item_delta,
-            'field_definition' => $field_definition,
-          ];
-
-          \Drupal::moduleHandler()->alter('d324_ace_paragraph_links', $links, $context);
-
-          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#attached'] = [
-            'library' => [
-              'core/drupal.dialog.ajax',
-              'd324_ace/d324_ace_frontend',
-            ],
-          ];
-
-          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#theme_wrappers'] = ['d324_ace_frontend_paragraph_wrapper'];
-
-          $vars['items'][$layout_item_id]['content']['regions'][$region_name][$region_index]['#paragraph_links'] = $links;
-
-          if (
-            $nested_paragraph_entity->isTranslatable() &&
-            $nested_paragraph_entity->hasTranslation($langcode)
-          ) {
-            $layout_region[$delta]['#paragraph'] = $nested_paragraph_entity->getTranslation($langcode);
-          }
-
-          $region_index++;
-          $delta++;
-          $item_delta++;
-
         }
       }
+
       // Attach the field wrapper ID in a data-attribute.
       $vars['items'][$layout_item_id]['attributes']['data-ace-field-paragraph-layout-wrapper'] = $layout_wrapper_id;
 
@@ -436,10 +444,10 @@ function d324_ace_preprocess_field(&$vars) {
           'parent_entity_bundle' => $parent->bundle(),
           'parent_entity_revision' => $parent_revision_id,
           'field' => $vars['field_name'],
-          'field_wrapper_id' => $field_wrapper_id,
-          'delta' => $item_delta,
-          'paragraph' => $nested_paragraph_entity->id(),
-          'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+          'field_wrapper_id' => $layout_wrapper_id,
+          'delta' => $layout_delta,
+          'paragraph' => $layout_paragraph->id(),
+          'paragraph_revision' => $layout_paragraph->getRevisionId(),
           'position' => 'before',
           'js' => 'nojs',
         ]),
@@ -462,10 +470,10 @@ function d324_ace_preprocess_field(&$vars) {
           'parent_entity_bundle' => $parent->bundle(),
           'parent_entity_revision' => $parent_revision_id,
           'field' => $vars['field_name'],
-          'field_wrapper_id' => $field_wrapper_id,
-          'delta' => $item_delta,
-          'paragraph' => $nested_paragraph_entity->id(),
-          'paragraph_revision' => $nested_paragraph_entity->getRevisionId(),
+          'field_wrapper_id' => $layout_wrapper_id,
+          'delta' => $layout_delta,
+          'paragraph' => $layout_paragraph->id(),
+          'paragraph_revision' => $layout_paragraph->getRevisionId(),
           'position' => 'after',
           'js' => 'nojs',
         ]),
@@ -489,7 +497,28 @@ function d324_ace_preprocess_field(&$vars) {
         ],
       ];
 
+      $layout_delta++;
+
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function d324_ace_preprocess_paragraph(&$variables) {
+  $elements = $variables['elements'];
+  $paragraph = $elements['#paragraph'];
+
+  if(!empty($elements['#paragraph_links'])) {
+    $variables['attributes']['data-ace-paragraph-id'] = ($paragraph)? $paragraph->id() : 0;
+    $variables['attributes']['class'][] = 'd324-ace-frontend-paragraph-wrapper';
+
+    // $variables['content'] = $elements['#children'];
+
+    $links = $elements['#paragraph_links'];
+
+    _d324_ace_prepare_links2($variables, $links, 'paragraph');
   }
 }
 
@@ -545,6 +574,80 @@ function d324_ace_preprocess_node(&$vars) {
         ->render($markup);
     }
   }
+}
+
+function _d324_ace_prepare_links(&$vars, $links, $type) {
+  foreach(['top','bottom'] as &$tb) {
+    foreach($links[$tb] as $reg_key => &$reg) {
+      $reg['#type'] = 'container';
+      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region';
+      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region-' . $reg_key;
+      foreach($reg as $link_key => &$reg_link) {
+        if ($link_key === '' || $link_key[0] !== '#') {
+          $reg_link['#attributes']['class'][] = 'd324-ace-button-' . $link_key;
+          if(!empty($reg_link['#icon'])) {
+            $reg_link['#title'] = Markup::create('<img src="/modules/d324/d324_ace/img/ace-' . $reg_link['#icon'] . '.svg" />');
+          }
+        }
+      }
+    }
+    $vars[$tb . '_links'] = $links[$tb];
+    $vars[$tb . '_links']['#type'] = "container";
+    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links';
+    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links-' . $tb;
+    $vars[$tb . '_links']['#attributes']['class'][] = "d324-ace-frontend-$type-links";
+  }
+}
+
+function _d324_ace_prepare_links2(&$vars, $links, $type) {
+  foreach(['top','bottom'] as &$tb) {
+    foreach($links[$tb] as $reg_key => &$reg) {
+      $reg['#type'] = 'container';
+      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region';
+      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region-' . $reg_key;
+      foreach($reg as $link_key => &$reg_link) {
+        if ($link_key === '' || $link_key[0] !== '#') {
+          $reg_link['#attributes']['class'][] = 'd324-ace-button-' . $link_key;
+          if(!empty($reg_link['#icon'])) {
+            $reg_link['#title'] = Markup::create('<img src="/modules/d324/d324_ace/img/ace-' . $reg_link['#icon'] . '.svg" />');
+          }
+        }
+      }
+    }
+    $vars[$tb . '_links'] = $links[$tb];
+    $vars[$tb . '_links']['#type'] = "container";
+    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links';
+    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links-' . $tb;
+    $vars[$tb . '_links']['#attributes']['class'][] = "d324-ace-frontend-$type-links";
+  }
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function d324_ace_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+  if(!empty($element['behavior_plugins']) && !empty($element['subform'])) {
+    $element['#after_build'][] = 'd324_ace_field_adjust_behavior_plugins';
+  }
+}
+
+function d324_ace_field_adjust_behavior_plugins($form_element, FormStateInterface &$form_state) {;
+  if(empty($form_element['behavior_plugins']['#type'])) {
+    $form_element['behavior_plugins']['#type'] = 'container';
+    $form_element['behavior_plugins']['#weight'] = 99;
+    $form_element['behavior_plugins']['#title'] = 'Additional Styles and Behaviors';
+    $form_element['behavior_plugins']['#attributes']['style'] = 'margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ccc;';
+    foreach(Element::children($form_element['behavior_plugins']) as $child_key) {
+      if(!empty($form_element['behavior_plugins'][$child_key]['#attributes']['class'])) {
+        foreach($form_element['behavior_plugins'][$child_key]['#attributes']['class'] as $class_key => $class_name) {
+          if($class_name == 'paragraphs-behavior') {
+            unset($form_element['behavior_plugins'][$child_key]['#attributes']['class'][$class_key]);
+          }
+        }
+      }
+    }
+  }
+  return $form_element;
 }
 
 /**

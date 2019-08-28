@@ -1,2 +1,8 @@
 slideshow_group:
   label: 'Slideshow Group'
+card_deck_group:
+  label: 'Card Deck Group'
+card_group:
+  label: 'Card Group'
+media_group:
+  label: 'Card Group'

@@ -4,11 +4,40 @@ ace-paragraphs-slideshow-light:
   groups:
     - slideshow_group
   libraries:
-    - 'd324_ace_paragraph_behaviors/slideshow.light'
+    - 'd324_ace_paragraph_behaviors/slideshow_light'
 ace-paragraphs-slideshow-dark:
   title: 'Slideshow Dark'
   description: 'Dark blue background with centered text.'
   groups:
     - slideshow_group
   libraries:
-    - 'd324_ace_paragraph_behaviors/slideshow.dark'
+    - 'd324_ace_paragraph_behaviors/slideshow_dark'
+ace-paragraphs-card-deck-standard:
+  title: 'Card Deck - Standard'
+  description: 'A standard card deck separated by gutters'
+  groups:
+    - card_deck_group
+  classes:
+    - 'card-deck'
+ace-paragraphs-card-deck-flush:
+  title: 'Card Deck - Flush to Edge'
+  description: 'A standard card deck separated by gutters with no side padding'
+  groups:
+    - card_deck_group
+  classes:
+    - 'card-deck px-0'
+ace-paragraphs-card-standard:
+  title: 'Card - Standard'
+  description: 'A standard card deck separated by gutters'
+  groups:
+    - card_group
+  classes:
+    - 'card'
+ace-paragraphs-card-bare:
+  title: 'Card - Bare'
+  description: 'No background'
+  groups:
+    - card_group
+  classes:
+    - 'card bg-transparent shadow-none border-0 justify-content-center'
+  template: 'paragraph--card--card-group--ace-paragraphs-card-bare'

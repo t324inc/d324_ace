@@ -40,9 +40,12 @@ class AceParagraphsClassBehavior extends ParagraphsBehaviorBase {
    * {@inheritdoc}
    */
   public function buildBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
+    $form['#type'] = 'details';
+    $form['#title'] = $this->t('Extra classes');
+    $form['#open'] = FALSE;
+    $form['#weight'] = 1;
     $form['extra_classes'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Extra classes'),
       '#description' => $this->t('Extra CSS classes to add to the paragraph HTML wrapper element'),
       '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'extra_classes'),
     ];
@@ -53,21 +56,13 @@ class AceParagraphsClassBehavior extends ParagraphsBehaviorBase {
    * {@inheritdoc}
    */
   public function validateBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
-    if(!empty($form_state->getValue('extra_classes'))) {
-      $values = explode(" ", $form_state->getValue('extra_classes'));
-      foreach($values as $value) {
-        if(!is_numeric($value)) {
-          $form_state->setError($form, 'Extra classes must be a number or something');
-        }
-      }
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function settingsSummary(Paragraph $paragraph) {
-    return [$this->t('Wrapper class element')];
+    return '';
   }
 
 }

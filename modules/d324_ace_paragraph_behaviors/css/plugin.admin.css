@@ -10,15 +10,6 @@
     margin-top: 5px;
     min-width: 150px;
   }
-  .paragraphs-plugin-inline-container > .form-item .paragraphs-plugin-form-element {
-    margin-left: 10px;
-    margin-bottom: 2px;
-    height: fit-content;
-  }
-  .paragraphs-plugin-inline-container > .form-item .select2-container {
-    margin-left: 10px;
-    margin-bottom: 2px;
-  }
   .paragraphs-plugin-inline-container.multiple-lines {
     flex-direction: column;
   }

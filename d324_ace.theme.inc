@@ -55,29 +55,6 @@ function template_preprocess_d324_ace_frontend_paragraph_wrapper(array &$vars) {
   _d324_ace_prepare_links($vars, $links, 'paragraph');
 }
 
-function _d324_ace_prepare_links(&$vars, $links, $type) {
-  foreach(['top','bottom'] as &$tb) {
-    foreach($links[$tb] as $reg_key => &$reg) {
-      $reg['#type'] = 'container';
-      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region';
-      $reg['#attributes']['class'][] = 'd324-ace-frontend-links-region-' . $reg_key;
-      foreach($reg as $link_key => &$reg_link) {
-        if ($link_key === '' || $link_key[0] !== '#') {
-          $reg_link['#attributes']['class'][] = 'd324-ace-button-' . $link_key;
-          if(!empty($reg_link['#icon'])) {
-            $reg_link['#title'] = Markup::create('<img src="/modules/d324/d324_ace/img/ace-' . $reg_link['#icon'] . '.svg" />');
-          }
-        }
-      }
-    }
-    $vars[$tb . '_links'] = $links[$tb];
-    $vars[$tb . '_links']['#type'] = "container";
-    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links';
-    $vars[$tb . '_links']['#attributes']['class'][] = 'd324-ace-frontend-links-' . $tb;
-    $vars[$tb . '_links']['#attributes']['class'][] = "d324-ace-frontend-$type-links";
-  }
-}
-
 /**
  * Prepares variables for D324 Ace frontend modal content
  *

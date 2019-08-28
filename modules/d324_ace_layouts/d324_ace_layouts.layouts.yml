@@ -1,6 +1,6 @@
 layout_onecolumn:
   label: 'One Column [1]'
-  template: templates/layouts/columns
+  template: templates/layouts/one-column
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 1'
   library: d324_ace_layouts/ace_layouts
@@ -13,7 +13,7 @@ layout_onecolumn:
 
 layout_twocolumn_halves:
   label: 'Two Column [1:1]'
-  template: templates/layouts/columns
+  template: templates/layouts/two-column-1-1
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
   library: d324_ace_layouts/ace_layouts
@@ -34,7 +34,7 @@ layout_twocolumn_halves:
 
 layout_twocolumn_onethird_twothirds:
   label: 'Two Column [1:2]'
-  template: templates/layouts/columns
+  template: templates/layouts/two-column-1-2
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
   library: d324_ace_layouts/ace_layouts
@@ -55,7 +55,7 @@ layout_twocolumn_onethird_twothirds:
 
 layout_twocolumn_twothirds_onethird:
   label: 'Two Column [2:1]'
-  template: templates/layouts/columns
+  template: templates/layouts/two-column-2-1
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 2'
   library: d324_ace_layouts/ace_layouts
@@ -77,7 +77,7 @@ layout_twocolumn_twothirds_onethird:
 
 layout_threecolumn_thirds:
   label: 'Three Column [1:1:1]'
-  template: templates/layouts/columns
+  template: templates/layouts/three-column
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
   library: d324_ace_layouts/ace_layouts
@@ -100,7 +100,7 @@ layout_threecolumn_thirds:
 
 layout_threecolumn_half_quarter_quarter:
   label: 'Three Column [2:1:1]'
-  template: templates/layouts/columns
+  template: templates/layouts/three-column-2-1-1
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
   library: d324_ace_layouts/ace_layouts
@@ -123,7 +123,7 @@ layout_threecolumn_half_quarter_quarter:
 
 layout_threecolumn_quarter_half_quarter:
   label: 'Three Column [1:2:1]'
-  template: templates/layouts/columns
+  template: templates/layouts/three-column-1-2-1
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
   library: d324_ace_layouts/ace_layouts
@@ -146,7 +146,7 @@ layout_threecolumn_quarter_half_quarter:
 
 layout_threecolumn_quarter_quarter_half:
   label: 'Three Column [1:1:2]'
-  template: templates/layouts/columns
+  template: templates/layouts/three-column-1-1-2
   class: '\Drupal\d324_ace\Plugin\Layout\AceLayout'
   category: 'Columns: 3'
   library: d324_ace_layouts/ace_layouts

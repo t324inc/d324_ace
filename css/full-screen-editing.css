@@ -49,6 +49,7 @@
   border-top: none;
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -67,6 +68,7 @@
   white-space: nowrap;
   flex-wrap: nowrap;
   align-items: center;
+  font-size: 1rem;
 }
 
 .layout-node-form .layout-region-node-footer__content .entity-content-form-footer .field--name-moderation-state > .form-wrapper > div select {
@@ -82,7 +84,7 @@
 }
 
 details.form-wrapper.card > .card-body {
-  padding: .5rem 0;
+
 }
 
 details.form-wrapper.card > .card-body > .form-item {
@@ -95,6 +97,33 @@ details.form-wrapper.card > .card-body > .form-item {
   display: flex;
 }
 
-.layout-node-form .layout-region-node-footer__content .form-actions input {
-  margin-right: .5rem;
+.layout-node-form .layout-region-node-footer__content .form-actions input, .layout-node-form .layout-region-node-footer__content .form-actions a.button {
+  padding: .75rem;
+  margin: 0 .5rem 0 0;
+  height: auto;
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.form-wrapper.media-library-widget > .fieldset-wrapper {
+  padding: 10px;
+  background: #fff;
+}
+
+.form-wrapper.media-library-widget > legend {
+  display: block !important;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+}
+
+.form-wrapper > legend, .ace-field .ace-layout-disabled > legend, .form-group > label {
+  font-size: 1rem;
+}
+
+form.node-form .tab-content .horizontal-tabs {
+  background: #fff;
+}
+
+form.node-form .tab-content .horizontal-tabs .card-body {
+  padding: 1rem 0;
 }

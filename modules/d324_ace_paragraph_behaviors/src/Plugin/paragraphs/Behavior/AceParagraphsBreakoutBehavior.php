@@ -40,6 +40,10 @@ class AceParagraphsBreakoutBehavior extends ParagraphsBehaviorBase {
    * {@inheritdoc}
    */
   public function buildBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
+    $form['#type'] = 'details';
+    $form['#title'] = $this->t('Breakout style options');
+    $form['#open'] = FALSE;
+    $form['#weight'] = 2;
     $form['breakout_style'] = [
       '#type' => 'select',
       '#title' => $this->t('Breakout style options'),
@@ -74,7 +78,7 @@ class AceParagraphsBreakoutBehavior extends ParagraphsBehaviorBase {
    * {@inheritdoc}
    */
   public function settingsSummary(Paragraph $paragraph) {
-    return [$this->t('Breakout style options')];
+    return '';
   }
 
 }

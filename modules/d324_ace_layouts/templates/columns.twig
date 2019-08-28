@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Template for a columns-based layout
+ *
+ * Available config:
+ * - header_classes: array of classes for header region
+ * - primary_classes: array of classes for primary region
+ * - secondary_classes: array of classes for secondary region
+ * - tertiary_classes: array of classes for tertiary region
+ * - footer_classes: array of classes for header region
+ */
+#}
+{%
+  set classes = [
+  'layout',
+  'l--' ~ layout.id|clean_class,
+]
+%}
+{% if content %}
+
+  {% if content['#main_attributes'] %}
+    {% set main_attributes = content['#main_attributes'] %}
+  {% else %}
+    {% set main_attributes = create_attribute() %}
+  {% endif %}
+
+  <div{{ attributes.addClass(classes) }}>
+
+    {% if content.header %}
+      <div {{ region_attributes.header.addClass(header_classes) }}>
+        {{ content.header }}
+      </div>
+    {% endif %}
+
+    <div{{ main_attributes.addClass(['layout--main', 'row']) }}>
+
+      {% if content.primary %}
+        <div {{ region_attributes.primary.addClass(primary_classes) }}>
+          {{ content.primary }}
+        </div>
+      {% endif %}
+
+      {% if content.secondary %}
+        <div {{ region_attributes.secondary.addClass(secondary_classes) }}>
+          {{ content.secondary }}
+        </div>
+      {% endif %}
+
+      {% if content.tertiary %}
+        <div {{ region_attributes.tertiary.addClass(tertiary_classes) }}>
+          {{ content.tertiary }}
+        </div>
+      {% endif %}
+
+    </div>
+
+    {% if content.footer %}
+      <div {{ region_attributes.footer.addClass(footer_classes) }}>
+        {{ content.footer }}
+      </div>
+    {% endif %}
+
+  </div>
+{% endif %}

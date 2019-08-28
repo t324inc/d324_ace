@@ -67,7 +67,7 @@ class AceParagraphsTextSettingsBehavior extends ParagraphsBehaviorBase {
    * {@inheritdoc}
    */
   public function settingsSummary(Paragraph $paragraph) {
-    return [$this->t('Wrapper class element')];
+    return '';
   }
 
 }
