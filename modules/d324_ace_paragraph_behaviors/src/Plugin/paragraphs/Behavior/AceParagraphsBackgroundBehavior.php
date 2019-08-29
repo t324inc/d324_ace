@@ -129,6 +129,18 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
           ],
         ];
       }
+      $form['hover_effects'] = [
+        '#type' => 'checkboxes',
+        '#title' => 'Hover Effects',
+        '#description' => 'Effects for the background image (if used) when the paragraph is hovered over by the user',
+        '#multiple' => TRUE,
+        '#options' => [
+          'zoom' => 'Zoom',
+          'lighten' => 'Lighten',
+          'darken' => 'Darken',
+        ],
+        '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'hover_effects'),
+      ];
     }
 
     return $form;
@@ -199,6 +211,11 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
         $a1 = $background_color_1['opacity'];
         $style = "background: rgba($r1,$g1,$b1,$a1); ";
       }
+      if($hover_effects = $paragraph->getBehaviorSetting($this->getPluginId(), 'hover_effects')) {
+        foreach($hover_effects as $hover_effect) {
+          $variables['wrapper_attributes']->addClass($hover_effect . '-wrap');
+        }
+      }
       if(!empty($style)) {
         $variables['background'][] = [
           '#type' => 'container',
@@ -225,6 +242,7 @@ class AceParagraphsBackgroundBehavior extends ParagraphsBehaviorBase implements 
         'color' => '',
         'opacity' => '',
       ],
+      'hover_effects' => [],
     ];
   }
 

@@ -41,7 +41,7 @@ class AceParagraphsClassBehavior extends ParagraphsBehaviorBase {
    */
   public function buildBehaviorForm(ParagraphInterface $paragraph, array &$form, FormStateInterface $form_state) {
     $form['#type'] = 'details';
-    $form['#title'] = $this->t('Extra classes');
+    $form['#title'] = $this->t('Extra Classes');
     $form['#open'] = FALSE;
     $form['#weight'] = 1;
     $form['extra_classes'] = [
