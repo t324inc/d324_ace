@@ -105,6 +105,16 @@ class AceParagraphsAppearBehavior extends ParagraphsBehaviorBase {
       }
       if($appear_delay = $paragraph->getBehaviorSetting($this->getPluginId(), 'appear_delay')) {
         $attributes->setAttribute("data-sal-delay", $appear_delay);
+        if($appear_delay > 1000) {
+          if($attributes['style']) {
+            $style = $attributes['style'];
+          } else {
+            $style = "";
+          }
+          $s_delay = $appear_delay / 1000.00;
+          $style .= "transition-delay: ${s_delay}s;";
+          $attributes->setAttribute("style", $style);
+        }
       }
       if($appear_easing = $paragraph->getBehaviorSetting($this->getPluginId(), 'appear_easing')) {
         $attributes->setAttribute("data-sal-easing", $appear_easing);
